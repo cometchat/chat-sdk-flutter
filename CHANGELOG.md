@@ -1,3 +1,7 @@
+## 4.0.5
+* Bug: fixed sending media messages with captions and tags in iOS
+* Bug: fixed sending media messages with Attachment URL in iOS
+
 ## 4.0.4
 * New: Added support to react on Text, Media and Custom Messages
 * New: Added a new field unreadMentionsCount field in Conversation Object
