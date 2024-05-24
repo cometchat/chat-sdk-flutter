@@ -1,3 +1,9 @@
+## 4.0.11
+**Enhancements**
+- Updated all 3rd-party plugins versions.
+- Resolved all static Dart Analyser suggestions
+- Added namespaces in build.gradle to avoid conflicts.
+
 ## 4.0.10
 **Fixes**
 - Fixed the issue where the onInteractiveMessageReceived listener is not working in iOS.
