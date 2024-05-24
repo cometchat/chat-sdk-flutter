@@ -1,3 +1,7 @@
+## 4.0.9
+**New**
+- Added PrivacyInfo file that complies with the latest apple guidelines for SDKs.
+
 ## 4.0.8
 **New**
 - Added a new boolean property **isBannedFromGroup** to the Group model class to indicate whether the user is banned from the group or not.
