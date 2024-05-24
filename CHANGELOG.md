@@ -1,3 +1,7 @@
+## 4.0.10
+**Fixes**
+- Fixed the issue where the onInteractiveMessageReceived listener is not working in iOS.
+
 ## 4.0.9
 **New**
 - Added PrivacyInfo file that complies with the latest apple guidelines for SDKs.
