@@ -1,3 +1,24 @@
+## 4.0.7
+**New**
+- Introduced `Reaction` and `ReactionEvent` classes to enhance the functionality of message reactions introduced in v4.0.3.
+- Added `ReactionsRequest` class as a replacement for `ReactionRequest` class introduced in v4.0.3.
+- Added `ReactionsRequestBuilder` class as a replacement for `ReactionRequestBuilder` class introduced in v4.0.3.
+- Introduced Enhanced Push Notification Feature.
+    - Added `PushPreferences`, GroupPreferences`, `MutePreferences`, `MutedConversation`, `UnmutedConversation` & `DaySchedule` classes
+    - Added method `registerPushToken` method to register push token.
+    - Added method `unregisterPushToken` method to unregister push token.
+    - Added method `muteConversations` method to mute push notifications of conversations.
+    - Added method `unmuteConversations` method to unmute push notifications of conversations.
+    - Added method `fetchPushPreferences`, `updatePushPreferences` & `resetPushPreferences` to fetch, update & reset push preferences.
+
+**Enhancements**
+- The real-time listeners `onMessageReactionAdded` and `onMessageReactionRemoved` have been improved to return an object of `ReactionEvent` class, providing a more robust event model.
+- `ReactionsRequestBuilder` has been enhanced to return a list of `Reaction` objects, offering a more intuitive and consistent API.
+
+**Removals**
+- Removed the `MessageReaction` class introduced in v4.0.3, transitioning its responsibilities to the new `Reaction` and `ReactionEvent` classes.
+- Removed `myMentionsOnly` method from `MessagesRequestBuilder` introduced in v4.0.2.
+
 ## 4.0.6
 * Bug: fixed sending metadata property in Call
 * Bug: fixed sending muid property in Call
