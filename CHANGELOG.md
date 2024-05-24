@@ -1,3 +1,7 @@
+## 4.0.6
+* Bug: fixed sending metadata property in Call
+* Bug: fixed sending muid property in Call
+
 ## 4.0.5
 * Bug: fixed sending media messages with captions and tags in iOS
 * Bug: fixed sending media messages with Attachment URL in iOS
