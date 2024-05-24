@@ -1,3 +1,8 @@
+## 4.0.3
+* New: Added support to mention a user in a Text & Media Message
+* New: Added support to send interactive messages like forms, card, etc.
+* New: Added a method to mark a message as unread
+
 ## 4.0.2
 * New: Added methods for AI Conversation Summary & AI Assist Bot
 
