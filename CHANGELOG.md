@@ -1,3 +1,8 @@
+## 4.0.4
+* New: Added support to react on Text, Media and Custom Messages
+* New: Added a new field unreadMentionsCount field in Conversation Object
+* New: Added a new field lastReadMessageId field in Conversation Object
+
 ## 4.0.3
 * New: Added support to mention a user in a Text & Media Message
 * New: Added support to send interactive messages like forms, card, etc.
