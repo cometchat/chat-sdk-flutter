@@ -1,3 +1,14 @@
+## 4.0.8
+**New**
+- Added a new boolean property **isBannedFromGroup** to the Group model class to indicate whether the user is banned from the group or not.
+- Introduced three new properties in **CustomMessage** class as follows:
+  - sendNotification: True value will trigger a notification for the custom message.
+  - conversationText: This string can be used to display the last message text in the conversation list.
+- updateConversation: If set to true, the message will appear as the last message in the Conversation and will update and reorder the conversation list, placing the conversation at the top.
+
+**Fixes**
+- Fixed URL handling in `CometChat.callExtension`, ensuring consistent and reliable endpoint interactions
+
 ## 4.0.7
 **New**
 - Introduced `Reaction` and `ReactionEvent` classes to enhance the functionality of message reactions introduced in v4.0.3.
