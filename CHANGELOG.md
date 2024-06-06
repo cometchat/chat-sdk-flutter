@@ -1,3 +1,7 @@
+## 4.0.12
+**New**
+- Added a method named getConversationUpdateSettings which returns the settings saved in Dashboard.
+
 ## 4.0.11
 **Enhancements**
 - Updated all 3rd-party plugins versions.
