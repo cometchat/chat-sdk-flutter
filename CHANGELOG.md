@@ -1,3 +1,12 @@
+## 4.0.13
+**New**
+- Added a new parameter `includeBlockedUsers` in `ConversationsRequestBuilder` to allow fetching conversations of users blocked by the logged-in user.
+- Added a new parameter `withBlockedInfo` in `ConversationsRequestBuilder` to fetch blocked information in the conversation object, such as blockedByMe and hasBlockedMe.
+- Added a new parameter for `scopes` in `BannedMembersRequestBuilder`.
+
+**Fixes**
+- Fixed an issue causing a critical crash on Android devices when invoking the `CometChat.disconnect()` method.
+
 ## 4.0.12
 **New**
 - Added a method named getConversationUpdateSettings which returns the settings saved in Dashboard.
