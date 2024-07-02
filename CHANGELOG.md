@@ -1,3 +1,12 @@
+## 4.0.14
+**Fixes**
+- Fixed an issue where the `CometChat.clearActiveCall()` method was incorrectly calling `ping` instead of `clearActiveCall`.
+- Fixed  action messages constructor to take only required values
+
+**Deprecations**
+- Deprecated the `receaverUid` parameter in the `CometChat.startTyping()` method. Please use the `receiverUid` property instead. The `receaverUid` parameter will be removed in a future release.
+- Deprecated the `receaverUid` parameter in the `CometChat.endTyping()` method. Please use the `receiverUid` property instead. The `receaverUid` parameter will be removed in a future release.
+
 ## 4.0.13
 **New**
 - Added a new parameter `includeBlockedUsers` in `ConversationsRequestBuilder` to allow fetching conversations of users blocked by the logged-in user.
