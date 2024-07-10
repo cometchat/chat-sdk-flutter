@@ -1,3 +1,17 @@
+## 4.0.15
+**New**
+- The following new methods have been introduced in the `CometChatNotifications` class:
+  - `updateTimezone`: This method updates the timezone for receiving Enhanced Email and Enhanced SMS notifications correctly.
+  - `getTimezone`: This method fetches the timezone set for a user.
+
+**Enhancements**
+- The following methods in the `CometChatNotifications` class have been deprecated:
+  - `fetchPushPreferences` is now deprecated. Please use `fetchPreferences` as an alternative.
+  - `updatePushPreferences` is now deprecated. Please use `updatePreferences` as an alternative.
+  - `resetPushPreferences` is now deprecated. Please use `resetPreferences` as an alternative.
+- The following class in the `CometChatNotifications` class has been deprecated:
+  - `PushPreferences` is now deprecated. Please use `NotificationPreferences` as an alternative.
+
 ## 4.0.14
 **Fixes**
 - Fixed an issue where the `CometChat.clearActiveCall()` method was incorrectly calling `ping` instead of `clearActiveCall`.
@@ -66,6 +80,16 @@
 - Removed the `MessageReaction` class introduced in v4.0.3, transitioning its responsibilities to the new `Reaction` and `ReactionEvent` classes.
 - Removed `myMentionsOnly` method from `MessagesRequestBuilder` introduced in v4.0.2.
 
+## 4.0.7-beta1
+* New: `ReactionEvent` Object will be emitted by `onMessageReactionAdded` & `onMessageReactionRemoved` events
+* New: `MessageReaction` class renamed to `Reaction`
+* New: `getReactions()` method replaced with `reactions` property in `BaseMessage` class 
+* New: `getMentionedUsers()` method replaced with `mentionedUsers` property in `BaseMessage` class
+* New: `hasMentionedMe()` method replaced with `hasMentionedMe` property in `BaseMessage` class
+* Bug: fixed `unreadRepliesCount` count incorrect type error in `Action` Object
+* Bug: fixed issue of other user's reactions not being received through the `lastMessage` property of `Conversation` Object on iOS
+* Bug: fixed issue of receiving `onMessageReactionAdded` & `onMessageReactionRemoved` events when it is the logged-in user calling `CometChat.addReaction` and `CometChat.removeReaction` on iOS
+
 ## 4.0.6
 * Bug: fixed sending metadata property in Call
 * Bug: fixed sending muid property in Call
@@ -94,3 +118,6 @@
 * New: Optimized websocket connection
 * New: Ping() for websocket connection
 * Bug: Fixes and performance improvements
+
+## 4.0.0-beta1
+* New: CometChat v4 support enabled
