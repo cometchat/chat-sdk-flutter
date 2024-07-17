@@ -1,3 +1,7 @@
+## 4.0.16
+**Fixes**
+- Fixed an issue where marking messages with mentions as read was not working.
+
 ## 4.0.15
 **New**
 - The following new methods have been introduced in the `CometChatNotifications` class:
