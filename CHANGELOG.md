@@ -1,3 +1,7 @@
+## 4.0.17
+**New**
+- Added `onMessagesDeliveredToAll` and `onMessagesReadByAll` listeners to notify message sender when group messages are delivered or read by everyone in the group.
+
 ## 4.0.16
 **Fixes**
 - Fixed an issue where marking messages with mentions as read was not working.
