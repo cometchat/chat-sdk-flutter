@@ -1,3 +1,7 @@
+## 4.0.18
+**Fixes**
+- Fixed an issue where `readAt` and `deliveredAt` timestamps were being added by default to `Action` messages.
+
 ## 4.0.17
 **New**
 - Added `onMessagesDeliveredToAll` and `onMessagesReadByAll` listeners to notify message sender when group messages are delivered or read by everyone in the group.
