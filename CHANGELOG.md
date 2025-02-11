@@ -1,3 +1,11 @@
+## 4.0.19
+**Fixes**
+Fixed an issue with editing text messages in the CometChat API where a 'Type Null is not a subtype of Type User' error occurred.
+
+**New**
+Fixed an issue where tags could not be added to a media message using the `CometChat.editMessage()` method.
+
+
 ## 4.0.18
 **Fixes**
 - Fixed an issue where `readAt` and `deliveredAt` timestamps were being added by default to `Action` messages.
