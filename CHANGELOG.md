@@ -1,3 +1,23 @@
+## 4.0.20
+
+**New**
+- Introduced **Conversations & Advanced Search** to enhance message and conversation filtering capabilities.
+- Added new filters to `MessagesRequestBuilder`:
+  - `hasAttachments()` – Retrieve messages that contain file attachments.
+  - `hasReactions()` – Retrieve messages that include user reactions.
+  - `hasMentions()` – Retrieve messages where users are mentioned.
+  - `hasLinks()` – Retrieve messages that contain hyperlinks.
+  - `setMentionedUIDs(List<String>)` – Retrieve messages mentioning specific user IDs.
+- Added new filters to `ConversationsRequestBuilder`:
+  - `setSearchKeyword(String)` – Search conversations (user or group) by name keyword.
+  - `setUnread(boolean)` – Retrieve only unread conversations.
+
+**Fixes**
+- Fixed an issue where an error appeared in the console when logging in for the first time on a freshly installed app on iOS. This issue did not cause a crash but has now been resolved to ensure a smoother login experience.
+
+**Removals**
+- Removed `myMentionsOnly` method from `MessagesRequestBuilder` introduced in v4.0.2.
+
 ## 4.0.19
 **Fixes**
 Fixed an issue with editing text messages in the CometChat API where a 'Type Null is not a subtype of Type User' error occurred.
