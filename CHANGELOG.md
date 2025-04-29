@@ -1,3 +1,8 @@
+## 4.0.21
+
+**Fixes**
+- Fixed runtime crash due to Swift symbol mismatch between CometChatSDK and CometChatStarscream frameworks.
+
 ## 4.0.20
 
 **New**
