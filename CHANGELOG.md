@@ -1,3 +1,8 @@
+## 4.0.22
+
+**Fixes**
+- Fixed an issue where real-time listener events were only triggered when a UI action occurred. This was due to listener registration happening within a post-frame callback, which delayed initialization. The fix ensures listeners are now initialized earlier, restoring real-time responsiveness.
+
 ## 4.0.21
 
 **Fixes**
