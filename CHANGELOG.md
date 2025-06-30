@@ -1,3 +1,10 @@
+## 4.0.23
+
+**New**
+- Added support for filtering conversations using new parameters in `ConversationsRequestBuilder`:
+  - `userTags` – Enables users to filter conversations based on specific user tags.
+  - `groupTags` – Enables users to filter conversations based on specific group tags.
+
 ## 4.0.22
 
 **Fixes**
