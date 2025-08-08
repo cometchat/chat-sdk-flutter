@@ -1,3 +1,14 @@
+## 4.0.24
+
+**New**
+- Added support for sending multiple media files in a single message, enabling richer and more efficient conversations.
+- Introduced `createGroupWithMembers` group creation by allowing users to create a group and add members in a single step.
+- Added `searchIn`, `sortBy`, and `sortByOrder` variables to the UsersRequestBuilder, giving developers more control over user filtering and ordering.
+- Added `attachmentTypes` variable to MessagesRequestBuilder, allowing developers to specify desired attachment types when fetching messages.
+
+**Enhancements**
+- Updated the `id` and `parentMessageId` fields in the message object from `int` to `long` to improve scalability and ensure consistency across platforms.
+
 ## 4.0.23
 
 **New**
