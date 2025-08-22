@@ -1,3 +1,14 @@
+## 4.0.25
+
+**New**
+- Added a new `onMessageModerated` method in the **MessageListener** class. This method is triggered when a message sent by the logged-in user is successfully processed by moderation and receives either an `approved` or `disapproved` status.
+- Introduced a new `moderationStatus` variable in both **TextMessage** and **MediaMessage** classes, allowing users to check the moderation status of their messages.
+- Added a new **ModerationStatusEnum** enum that includes the following states:
+  - `pending`
+  - `approved`
+  - `disapproved`
+  - `unmoderated` (default for apps without moderation enabled)
+
 ## 4.0.24
 
 **New**
