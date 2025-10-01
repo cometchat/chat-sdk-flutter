@@ -1,3 +1,8 @@
+## 4.0.26
+
+**Fixes**
+- Added a missing method to fetch message details by message ID.
+
 ## 4.0.25
 
 **New**
