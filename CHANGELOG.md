@@ -1,3 +1,31 @@
+## 4.0.27
+
+**New**
+- Added AI Assistant Event Classes to provide detailed lifecycle tracking for AI assistant interactions:
+  - `AIAssistantBaseEvent` – Serves as the base type for all AI assistant-related events.
+  - `AIAssistantRunStartedEvent` – Triggered when an AI assistant run begins.
+  - `AIAssistantRunFinishedEvent` – Triggered when an AI assistant run completes.
+  - `AIAssistantMessageEndedEvent` – Triggered when an AI assistant finishes sending a message.
+  - `AIAssistantContentReceivedEvent` – Triggered when content is received from the AI assistant.
+  - `AIAssistantToolStartedEvent` – Triggered when the AI assistant starts executing a tool.
+  - `AIAssistantToolEndedEvent` – Triggered when the AI assistant completes a tool execution.
+  - `AIAssistantToolArgumentEvent` – Triggered when arguments are passed to an AI tool.
+  - `AIAssistantToolResultEvent` – Triggered when results are returned from an AI tool.
+- Introduced `AIAssistantListener` for subscribing to and handling AI assistant events:
+  - `addAIAssistantListener` – Registers a listener for AI assistant events.
+  - `removeAIAssistantListener` – Unregisters an AI assistant listener.
+  - `onAIAssistantEventReceived` – Handles incoming AI assistant events.
+- Introduced new methods in `MessageListener` for subscribing to and handling new AI assistant messages:
+  - `onAIAssistantMessageReceived` – Handles incoming AI assistant message.
+  - `onAIToolArgumentsReceived` – Handles incoming AI tool arguments.
+  - `onAIToolResultReceived` – Handles incoming AI tool result.
+- Added Messages & Data Classes for structured handling of AI tool call, argument, result and message:
+  - `AIToolResultMessage` – Represents a message containing the result of a tool execution.
+  - `AIToolCall` – Contains structured data for a specific AI tool call.
+  - `AIToolCallFunction` – Contains structured data for a specific AI tool call function.
+  - `AIToolArgumentMessage` – Represents a message containing tool arguments.
+  - `AIAssistantMessage` – Represents a message sent by the AI assistant.
+
 ## 4.0.26
 
 **Fixes**
