@@ -1,3 +1,8 @@
+## 4.0.28
+
+**Fixes**
+- Resolved an issue where sending multiple media files using the chat SDK did not return the list of attachments in the `onSuccess` callback. This issue occurred despite successful media transmission and has now been fixed to ensure accurate delivery feedback.
+
 ## 4.0.27
 
 **New**
