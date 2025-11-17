@@ -1,3 +1,13 @@
+## 4.0.29
+
+**New**
+-  Added filters (`hideAgentic`, `onlyAgentic`) to ConversationsRequest to help manage AI-driven (agentic) conversations.
+- Added a status filter to GroupMembersRequest for more precise member management.
+
+**Enhancements**
+- Added setPage() methods to all request builders, enabling direct page navigation and improved data handling in paginated responses.
+- Implemented file size and file count validation in sendMediaMessage(), with configurable limits available through Settings.
+
 ## 4.0.28
 
 **Fixes**
