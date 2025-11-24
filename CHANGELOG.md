@@ -1,3 +1,13 @@
+## 4.0.30
+
+**Enhancements**
+- Changed the default limit to fetch in various request builders from 50 to 30.
+
+**Fixes**
+- Fixed an issue where only offline group members were fetched by default.
+- Fixed pagination issue in various request builders.
+- Added a flag to prevent multiple requests from being triggered simultaneously within a method.
+
 ## 4.0.29
 
 **New**
