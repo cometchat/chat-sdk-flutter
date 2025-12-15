@@ -1,3 +1,12 @@
+## 4.0.31
+
+**New**
+- Added a `getFlagReasons` method that retrieves the list of available flag reasons from the dashboard, allowing developers to display accurate and up-to-date reporting categories.
+- Added a `flagMessage` method that enables developers to flag a specific message by providing the message ID and the corresponding reason ID.
+- Added `quotedMessageId` variable to the BaseMessage class for retrieving and assigning the ID of a quoted message.
+- Introduced `quotedMessage` in the BaseMessage class to get or set the quoted message object.
+- Introduced `hideQuotedMessages` in the MessageRequestBuilder class to configure whether quoted messages should be included in the response.
+
 ## 4.0.30
 
 **Enhancements**
