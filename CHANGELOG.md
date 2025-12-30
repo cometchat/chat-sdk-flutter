@@ -1,3 +1,8 @@
+## 4.0.33
+
+**Fixes**
+- Resolved an issue where image and video thumbnails were not displayed for url not present in metadata when the file access token feature was enabled.
+
 ## 4.0.32
 
 **New**
@@ -6,6 +11,7 @@
 - Added `quotedMessageId` variable to the BaseMessage class for retrieving and assigning the ID of a quoted message.
 - Introduced `quotedMessage` in the BaseMessage class to get or set the quoted message object.
 - Introduced `hideQuotedMessages` in the MessageRequestBuilder class to configure whether quoted messages should be included in the response.
+
 
 ## 4.0.31
 
@@ -29,7 +35,7 @@
 ## 4.0.29
 
 **New**
--  Added filters (`hideAgentic`, `onlyAgentic`) to ConversationsRequest to help manage AI-driven (agentic) conversations.
+- Added filters (`hideAgentic`, `onlyAgentic`) to ConversationsRequest to help manage AI-driven (agentic) conversations.
 - Added a status filter to GroupMembersRequest for more precise member management.
 
 **Enhancements**
@@ -44,29 +50,29 @@
 ## 4.0.27
 
 **New**
-- Added AI Assistant Event Classes to provide detailed lifecycle tracking for AI assistant interactions:
-  - `AIAssistantBaseEvent` – Serves as the base type for all AI assistant-related events.
-  - `AIAssistantRunStartedEvent` – Triggered when an AI assistant run begins.
-  - `AIAssistantRunFinishedEvent` – Triggered when an AI assistant run completes.
-  - `AIAssistantMessageEndedEvent` – Triggered when an AI assistant finishes sending a message.
-  - `AIAssistantContentReceivedEvent` – Triggered when content is received from the AI assistant.
-  - `AIAssistantToolStartedEvent` – Triggered when the AI assistant starts executing a tool.
-  - `AIAssistantToolEndedEvent` – Triggered when the AI assistant completes a tool execution.
-  - `AIAssistantToolArgumentEvent` – Triggered when arguments are passed to an AI tool.
+- Added AI Assistant Event Classes to provide detailed lifecycle tracking for AI assistant interactions:  
+  - `AIAssistantBaseEvent` – Serves as the base type for all AI assistant-related events.  
+  - `AIAssistantRunStartedEvent` – Triggered when an AI assistant run begins.  
+  - `AIAssistantRunFinishedEvent` – Triggered when an AI assistant run completes.  
+  - `AIAssistantMessageEndedEvent` – Triggered when an AI assistant finishes sending a message.  
+  - `AIAssistantContentReceivedEvent` – Triggered when content is received from the AI assistant.  
+  - `AIAssistantToolStartedEvent` – Triggered when the AI assistant starts executing a tool.  
+  - `AIAssistantToolEndedEvent` – Triggered when the AI assistant completes a tool execution.  
+  - `AIAssistantToolArgumentEvent` – Triggered when arguments are passed to an AI tool.  
   - `AIAssistantToolResultEvent` – Triggered when results are returned from an AI tool.
-- Introduced `AIAssistantListener` for subscribing to and handling AI assistant events:
-  - `addAIAssistantListener` – Registers a listener for AI assistant events.
-  - `removeAIAssistantListener` – Unregisters an AI assistant listener.
+- Introduced `AIAssistantListener` for subscribing to and handling AI assistant events:  
+  - `addAIAssistantListener` – Registers a listener for AI assistant events.  
+  - `removeAIAssistantListener` – Unregisters an AI assistant listener.  
   - `onAIAssistantEventReceived` – Handles incoming AI assistant events.
-- Introduced new methods in `MessageListener` for subscribing to and handling new AI assistant messages:
-  - `onAIAssistantMessageReceived` – Handles incoming AI assistant message.
-  - `onAIToolArgumentsReceived` – Handles incoming AI tool arguments.
+- Introduced new methods in `MessageListener` for subscribing to and handling new AI assistant messages:  
+  - `onAIAssistantMessageReceived` – Handles incoming AI assistant message.  
+  - `onAIToolArgumentsReceived` – Handles incoming AI tool arguments.  
   - `onAIToolResultReceived` – Handles incoming AI tool result.
-- Added Messages & Data Classes for structured handling of AI tool call, argument, result and message:
-  - `AIToolResultMessage` – Represents a message containing the result of a tool execution.
-  - `AIToolCall` – Contains structured data for a specific AI tool call.
-  - `AIToolCallFunction` – Contains structured data for a specific AI tool call function.
-  - `AIToolArgumentMessage` – Represents a message containing tool arguments.
+- Added Messages & Data Classes for structured handling of AI tool call, argument, result and message:  
+  - `AIToolResultMessage` – Represents a message containing the result of a tool execution.  
+  - `AIToolCall` – Contains structured data for a specific AI tool call.  
+  - `AIToolCallFunction` – Contains structured data for a specific AI tool call function.  
+  - `AIToolArgumentMessage` – Represents a message containing tool arguments.  
   - `AIAssistantMessage` – Represents a message sent by the AI assistant.
 
 ## 4.0.26
@@ -138,8 +144,7 @@
 Fixed an issue with editing text messages in the CometChat API where a 'Type Null is not a subtype of Type User' error occurred.
 
 **New**
-Fixed an issue where tags could not be added to a media message using the `CometChat.editMessage()` method.
-
+Fixed an issue where tags could not be added to a media message using the `CometChat.editMessage()` method in Flutter
 
 ## 4.0.18
 **Fixes**
