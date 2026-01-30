@@ -1,3 +1,14 @@
+## 4.1.0
+
+**New**
+- Introduced `markMessageAsUnread()` method to allow marking messages as unread for easier tracking and follow-up.
+- Added `markConversationAsDelivered()` method to signal that a conversation has been delivered.
+- Introduced `markConversationAsRead()` method to update the status of a conversation to "read."
+- Updated `lastReadMessageId` variable to return and accept a int type instead of a string.
+
+**Deprecations**
+- Deprecated `markAsUnread()` method. Please use `markMessageAsUnread()` instead.
+
 ## 4.0.33
 
 **Fixes**
