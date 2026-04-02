@@ -9,17 +9,6 @@ The CometChat SDK is a robust toolkit that developers can utilize to swiftly inc
   <img src="../screenshots/showcase-mobile.png" alt="Mobile Showcase">
 </p>
 
-## Features
-
-- 1:1 and group text messaging
-- Media message support (images, videos, files, audio)
-- Real-time message delivery and read receipts
-- Typing indicators
-- User presence (online/offline)
-- Message reactions and threads
-- Interactive messages (forms, cards, etc.)
-- AI assistant integration
-
 ## Installation
 
 Add the CometChat SDK dependency to your `pubspec.yaml`:

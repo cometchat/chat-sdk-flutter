@@ -10,17 +10,6 @@ The CometChat Flutter SDK provides a robust toolkit to add real-time chat functi
   <img src="./screenshots/showcase-mobile.png" alt="Mobile Showcase">
 </p>
 
-## Features
-
-- One-on-one and group text messaging
-- Media messages (images, videos, files, audio)
-- Real-time message delivery and read receipts
-- Typing indicators
-- User presence (online/offline status)
-- Message reactions and threaded conversations
-- Interactive messages (forms, cards, schedulers)
-- AI-powered features (smart replies, conversation summary, etc.)
-
 ## Prerequisites
 
 - Flutter >= 3.10.5
