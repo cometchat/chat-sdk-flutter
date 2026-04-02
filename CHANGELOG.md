@@ -1,0 +1,313 @@
+## 5.0.0-beta1
+
+**New**
+- All platform channel method calls have been replaced with native Dart implementations, resulting in significant speed and performance improvements.
+- The SDK now runs entirely on Dart by default, bringing cross-platform support to iOS, Android, and Web.
+
+**Breaking Changes**
+- `onTypingIndicator()` now returns `Stream<TypingIndicator>` instead of `Stream<String>`. 
+
+Typing events include `sender`, `receiverId`, `receiverType`, `metadata`, `lastTimestamp`, and `typingStatus` fields. 
+
+Use `TypingIndicator.typingStatus` ("started" or "ended") instead of checking `methodName`. No `EventChannel` dependency — works on all platforms including web. Existing `MessageListener` callbacks (`onTypingStarted` / `onTypingEnded`) continue to work unchanged.
+
+**Removals**
+- Removed deprecated `markAsUnread()` method. Use `markMessageAsUnread()` instead.
+- Removed deprecated `receaverUid` parameter from `startTyping()` and `endTyping()`. Use `receiverUid` instead.
+- Removed deprecated `fetchPushPreferences()`, `updatePushPreferences()`, and `resetPushPreferences()` methods. Use `fetchPreferences()`, `updatePreferences()`, and `resetPreferences()` instead.
+- Removed deprecated `PushPreferences` class. Use `NotificationPreferences` instead.
+
+## 4.1.0
+
+**New**
+- Introduced `markMessageAsUnread()` method to allow marking messages as unread for easier tracking and follow-up.
+- Added `markConversationAsDelivered()` method to signal that a conversation has been delivered.
+- Introduced `markConversationAsRead()` method to update the status of a conversation to "read."
+- Updated `lastReadMessageId` variable to return and accept a int type instead of a string.
+
+**Deprecations**
+- Deprecated `markAsUnread()` method. Please use `markMessageAsUnread()` instead.
+
+## 4.0.33
+
+**Fixes**
+- Resolved an issue where image and video thumbnails were not displayed for url not present in metadata when the file access token feature was enabled.
+
+## 4.0.32
+
+**New**
+- Added a `getFlagReasons` method that retrieves the list of available flag reasons from the dashboard, allowing developers to display accurate and up-to-date reporting categories.
+- Added a `flagMessage` method that enables developers to flag a specific message by providing the message ID and the corresponding reason ID.
+- Added `quotedMessageId` variable to the BaseMessage class for retrieving and assigning the ID of a quoted message.
+- Introduced `quotedMessage` in the BaseMessage class to get or set the quoted message object.
+- Introduced `hideQuotedMessages` in the MessageRequestBuilder class to configure whether quoted messages should be included in the response.
+
+
+## 4.0.31
+
+**New**
+- Added a `getFlagReasons` method that retrieves the list of available flag reasons from the dashboard, allowing developers to display accurate and up-to-date reporting categories.
+- Added a `flagMessage` method that enables developers to flag a specific message by providing the message ID and the corresponding reason ID.
+- Added `quotedMessageId` variable to the BaseMessage class for retrieving and assigning the ID of a quoted message.
+- Introduced `quotedMessage` in the BaseMessage class to get or set the quoted message object.
+- Introduced `hideQuotedMessages` in the MessageRequestBuilder class to configure whether quoted messages should be included in the response.
+
+## 4.0.30
+
+**Enhancements**
+- Changed the default limit to fetch in various request builders from 50 to 30.
+
+**Fixes**
+- Fixed an issue where only offline group members were fetched by default.
+- Fixed pagination issue in various request builders.
+- Added a flag to prevent multiple requests from being triggered simultaneously within a method.
+
+## 4.0.29
+
+**New**
+- Added filters (`hideAgentic`, `onlyAgentic`) to ConversationsRequest to help manage AI-driven (agentic) conversations.
+- Added a status filter to GroupMembersRequest for more precise member management.
+
+**Enhancements**
+- Added setPage() methods to all request builders, enabling direct page navigation and improved data handling in paginated responses.
+- Implemented file size and file count validation in sendMediaMessage(), with configurable limits available through Settings.
+
+## 4.0.28
+
+**Fixes**
+- Resolved an issue where sending multiple media files using the chat SDK did not return the list of attachments in the `onSuccess` callback. This issue occurred despite successful media transmission and has now been fixed to ensure accurate delivery feedback.
+
+## 4.0.27
+
+**New**
+- Added AI Assistant Event Classes to provide detailed lifecycle tracking for AI assistant interactions:  
+  - `AIAssistantBaseEvent` – Serves as the base type for all AI assistant-related events.  
+  - `AIAssistantRunStartedEvent` – Triggered when an AI assistant run begins.  
+  - `AIAssistantRunFinishedEvent` – Triggered when an AI assistant run completes.  
+  - `AIAssistantMessageEndedEvent` – Triggered when an AI assistant finishes sending a message.  
+  - `AIAssistantContentReceivedEvent` – Triggered when content is received from the AI assistant.  
+  - `AIAssistantToolStartedEvent` – Triggered when the AI assistant starts executing a tool.  
+  - `AIAssistantToolEndedEvent` – Triggered when the AI assistant completes a tool execution.  
+  - `AIAssistantToolArgumentEvent` – Triggered when arguments are passed to an AI tool.  
+  - `AIAssistantToolResultEvent` – Triggered when results are returned from an AI tool.
+- Introduced `AIAssistantListener` for subscribing to and handling AI assistant events:  
+  - `addAIAssistantListener` – Registers a listener for AI assistant events.  
+  - `removeAIAssistantListener` – Unregisters an AI assistant listener.  
+  - `onAIAssistantEventReceived` – Handles incoming AI assistant events.
+- Introduced new methods in `MessageListener` for subscribing to and handling new AI assistant messages:  
+  - `onAIAssistantMessageReceived` – Handles incoming AI assistant message.  
+  - `onAIToolArgumentsReceived` – Handles incoming AI tool arguments.  
+  - `onAIToolResultReceived` – Handles incoming AI tool result.
+- Added Messages & Data Classes for structured handling of AI tool call, argument, result and message:  
+  - `AIToolResultMessage` – Represents a message containing the result of a tool execution.  
+  - `AIToolCall` – Contains structured data for a specific AI tool call.  
+  - `AIToolCallFunction` – Contains structured data for a specific AI tool call function.  
+  - `AIToolArgumentMessage` – Represents a message containing tool arguments.  
+  - `AIAssistantMessage` – Represents a message sent by the AI assistant.
+
+## 4.0.26
+
+**Fixes**
+- Added a missing method to fetch message details by message ID.
+
+## 4.0.25
+
+**New**
+- Added a new `onMessageModerated` method in the **MessageListener** class. This method is triggered when a message sent by the logged-in user is successfully processed by moderation and receives either an `approved` or `disapproved` status.
+- Introduced a new `moderationStatus` variable in both **TextMessage** and **MediaMessage** classes, allowing users to check the moderation status of their messages.
+- Added a new **ModerationStatusEnum** enum that includes the following states:
+  - `pending`
+  - `approved`
+  - `disapproved`
+  - `unmoderated` (default for apps without moderation enabled)
+
+## 4.0.24
+
+**New**
+- Added support for sending multiple media files in a single message, enabling richer and more efficient conversations.
+- Introduced `createGroupWithMembers` group creation by allowing users to create a group and add members in a single step.
+- Added `searchIn`, `sortBy`, and `sortByOrder` variables to the UsersRequestBuilder, giving developers more control over user filtering and ordering.
+- Added `attachmentTypes` variable to MessagesRequestBuilder, allowing developers to specify desired attachment types when fetching messages.
+
+**Enhancements**
+- Updated the `id` and `parentMessageId` fields in the message object from `int` to `long` to improve scalability and ensure consistency across platforms.
+
+## 4.0.23
+
+**New**
+- Added support for filtering conversations using new parameters in `ConversationsRequestBuilder`:
+  - `userTags` – Enables users to filter conversations based on specific user tags.
+  - `groupTags` – Enables users to filter conversations based on specific group tags.
+
+## 4.0.22
+
+**Fixes**
+- Fixed an issue where real-time listener events were only triggered when a UI action occurred. This was due to listener registration happening within a post-frame callback, which delayed initialization. The fix ensures listeners are now initialized earlier, restoring real-time responsiveness.
+
+## 4.0.21
+
+**Fixes**
+- Fixed runtime crash due to Swift symbol mismatch between CometChatSDK and CometChatStarscream frameworks.
+
+## 4.0.20
+
+**New**
+- Introduced **Conversations & Advanced Search** to enhance message and conversation filtering capabilities.
+- Added new filters to `MessagesRequestBuilder`:
+  - `hasAttachments()` – Retrieve messages that contain file attachments.
+  - `hasReactions()` – Retrieve messages that include user reactions.
+  - `hasMentions()` – Retrieve messages where users are mentioned.
+  - `hasLinks()` – Retrieve messages that contain hyperlinks.
+  - `setMentionedUIDs(List<String>)` – Retrieve messages mentioning specific user IDs.
+- Added new filters to `ConversationsRequestBuilder`:
+  - `setSearchKeyword(String)` – Search conversations (user or group) by name keyword.
+  - `setUnread(boolean)` – Retrieve only unread conversations.
+
+**Fixes**
+- Fixed an issue where an error appeared in the console when logging in for the first time on a freshly installed app on iOS. This issue did not cause a crash but has now been resolved to ensure a smoother login experience.
+
+**Removals**
+- Removed `myMentionsOnly` method from `MessagesRequestBuilder` introduced in v4.0.2.
+
+## 4.0.19
+**Fixes**
+Fixed an issue with editing text messages in the CometChat API where a 'Type Null is not a subtype of Type User' error occurred.
+
+**New**
+Fixed an issue where tags could not be added to a media message using the `CometChat.editMessage()` method in Flutter
+
+## 4.0.18
+**Fixes**
+- Fixed an issue where `readAt` and `deliveredAt` timestamps were being added by default to `Action` messages.
+
+## 4.0.17
+**New**
+- Added `onMessagesDeliveredToAll` and `onMessagesReadByAll` listeners to notify message sender when group messages are delivered or read by everyone in the group.
+
+## 4.0.16
+**Fixes**
+- Fixed an issue where marking messages with mentions as read was not working.
+
+## 4.0.15
+**New**
+- The following new methods have been introduced in the `CometChatNotifications` class:
+  - `updateTimezone`: This method updates the timezone for receiving Enhanced Email and Enhanced SMS notifications correctly.
+  - `getTimezone`: This method fetches the timezone set for a user.
+
+**Enhancements**
+- The following methods in the `CometChatNotifications` class have been deprecated:
+  - `fetchPushPreferences` is now deprecated. Please use `fetchPreferences` as an alternative.
+  - `updatePushPreferences` is now deprecated. Please use `updatePreferences` as an alternative.
+  - `resetPushPreferences` is now deprecated. Please use `resetPreferences` as an alternative.
+- The following class in the `CometChatNotifications` class has been deprecated:
+  - `PushPreferences` is now deprecated. Please use `NotificationPreferences` as an alternative.
+
+## 4.0.14
+**Fixes**
+- Fixed an issue where the `CometChat.clearActiveCall()` method was incorrectly calling `ping` instead of `clearActiveCall`.
+- Fixed  action messages constructor to take only required values
+
+**Deprecations**
+- Deprecated the `receaverUid` parameter in the `CometChat.startTyping()` method. Please use the `receiverUid` property instead. The `receaverUid` parameter will be removed in a future release.
+- Deprecated the `receaverUid` parameter in the `CometChat.endTyping()` method. Please use the `receiverUid` property instead. The `receaverUid` parameter will be removed in a future release.
+
+## 4.0.13
+**New**
+- Added a new parameter `includeBlockedUsers` in `ConversationsRequestBuilder` to allow fetching conversations of users blocked by the logged-in user.
+- Added a new parameter `withBlockedInfo` in `ConversationsRequestBuilder` to fetch blocked information in the conversation object, such as blockedByMe and hasBlockedMe.
+- Added a new parameter for `scopes` in `BannedMembersRequestBuilder`.
+
+**Fixes**
+- Fixed an issue causing a critical crash on Android devices when invoking the `CometChat.disconnect()` method.
+
+## 4.0.12
+**New**
+- Added a method named getConversationUpdateSettings which returns the settings saved in Dashboard.
+
+## 4.0.11
+**Enhancements**
+- Updated all 3rd-party plugins versions.
+- Resolved all static Dart Analyser suggestions
+- Added namespaces in build.gradle to avoid conflicts.
+
+## 4.0.10
+**Fixes**
+- Fixed the issue where the onInteractiveMessageReceived listener is not working in iOS.
+
+## 4.0.9
+**New**
+- Added PrivacyInfo file that complies with the latest apple guidelines for SDKs.
+
+## 4.0.8
+**New**
+- Added a new boolean property **isBannedFromGroup** to the Group model class to indicate whether the user is banned from the group or not.
+- Introduced three new properties in **CustomMessage** class as follows:
+  - sendNotification: True value will trigger a notification for the custom message.
+  - conversationText: This string can be used to display the last message text in the conversation list.
+- updateConversation: If set to true, the message will appear as the last message in the Conversation and will update and reorder the conversation list, placing the conversation at the top.
+
+**Fixes**
+- Fixed URL handling in `CometChat.callExtension`, ensuring consistent and reliable endpoint interactions
+
+## 4.0.7
+**New**
+- Introduced `Reaction` and `ReactionEvent` classes to enhance the functionality of message reactions introduced in v4.0.3.
+- Added `ReactionsRequest` class as a replacement for `ReactionRequest` class introduced in v4.0.3.
+- Added `ReactionsRequestBuilder` class as a replacement for `ReactionRequestBuilder` class introduced in v4.0.3.
+- Introduced Enhanced Push Notification Feature.
+    - Added `PushPreferences`, GroupPreferences`, `MutePreferences`, `MutedConversation`, `UnmutedConversation` & `DaySchedule` classes
+    - Added method `registerPushToken` method to register push token.
+    - Added method `unregisterPushToken` method to unregister push token.
+    - Added method `muteConversations` method to mute push notifications of conversations.
+    - Added method `unmuteConversations` method to unmute push notifications of conversations.
+    - Added method `fetchPushPreferences`, `updatePushPreferences` & `resetPushPreferences` to fetch, update & reset push preferences.
+
+**Enhancements**
+- The real-time listeners `onMessageReactionAdded` and `onMessageReactionRemoved` have been improved to return an object of `ReactionEvent` class, providing a more robust event model.
+- `ReactionsRequestBuilder` has been enhanced to return a list of `Reaction` objects, offering a more intuitive and consistent API.
+
+**Removals**
+- Removed the `MessageReaction` class introduced in v4.0.3, transitioning its responsibilities to the new `Reaction` and `ReactionEvent` classes.
+- Removed `myMentionsOnly` method from `MessagesRequestBuilder` introduced in v4.0.2.
+
+## 4.0.7-beta1
+* New: `ReactionEvent` Object will be emitted by `onMessageReactionAdded` & `onMessageReactionRemoved` events
+* New: `MessageReaction` class renamed to `Reaction`
+* New: `getReactions()` method replaced with `reactions` property in `BaseMessage` class 
+* New: `getMentionedUsers()` method replaced with `mentionedUsers` property in `BaseMessage` class
+* New: `hasMentionedMe()` method replaced with `hasMentionedMe` property in `BaseMessage` class
+* Bug: fixed `unreadRepliesCount` count incorrect type error in `Action` Object
+* Bug: fixed issue of other user's reactions not being received through the `lastMessage` property of `Conversation` Object on iOS
+* Bug: fixed issue of receiving `onMessageReactionAdded` & `onMessageReactionRemoved` events when it is the logged-in user calling `CometChat.addReaction` and `CometChat.removeReaction` on iOS
+
+## 4.0.6
+* Bug: fixed sending metadata property in Call
+* Bug: fixed sending muid property in Call
+
+## 4.0.5
+* Bug: fixed sending media messages with captions and tags in iOS
+* Bug: fixed sending media messages with Attachment URL in iOS
+
+## 4.0.4
+* New: Added support to react on Text, Media and Custom Messages
+* New: Added a new field unreadMentionsCount field in Conversation Object
+* New: Added a new field lastReadMessageId field in Conversation Object
+
+## 4.0.3
+* New: Added support to mention a user in a Text & Media Message
+* New: Added support to send interactive messages like forms, card, etc.
+* New: Added a method to mark a message as unread
+
+## 4.0.2
+* New: Added methods for AI Conversation Summary & AI Assist Bot
+
+## 4.0.1
+* Bug: Fixes and performance improvements
+
+## 4.0.0
+* New: Optimized websocket connection
+* New: Ping() for websocket connection
+* Bug: Fixes and performance improvements
+
+## 4.0.0-beta1
+* New: CometChat v4 support enabled
