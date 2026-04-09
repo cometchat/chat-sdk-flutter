@@ -1,19 +1,10 @@
-## 4.1.1
-
-**New**
-- Introduced **Secure Media Mode**, enabling secure access to media files without exposing File Access Tokens (FAT) in URLs.
-- Added the `SecureMediaMode` enum with the following options:
-  - `embedded` (default): Appends the FAT token as a query parameter to media URLs.
-  - `headerBased`: Sends the FAT token in request headers and retrieves a presigned URL for secure media access.
-  - Available via `SecureMediaMode`.
-- Added support for configuring secure media behavior using `AppSettingsBuilder.setSecureMediaMode()`.
-- Added `CometChat.fetchPresignedUrl(url)` to securely retrieve presigned URLs when using header-based mode.
-- Added `CometChat.getFat()` to retrieve the decoded File Access Token (FAT) for the logged-in user.
-- Added `CometChatHelper.isHeaderModeEnabled()` to check whether header-based secure media mode is active.
-- Added `CometChatHelper.requiresSecureAccess(url)` to determine whether a media URL requires secure access handling.
+## 4.1.2
 
 **Enhancements**
-- Added an `isInitialized` method in the Flutter SDK to verify whether CometChat has been successfully initialized.
+- Added support for configuring unanswered call timeouts in `CometChat.initiateCall()`, allowing calls to be automatically rejected after a specified number of seconds. The default timeout is 45 seconds.
+
+**Fixes**
+- Resolved an issue where the `text_message_end` event was not recognized during AI Assistant streaming, preventing the streaming message bubble from finalizing correctly.
 
 ## 4.1.0
 
