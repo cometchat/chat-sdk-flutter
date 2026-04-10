@@ -10,6 +10,10 @@ The CometChat Flutter SDK provides a robust toolkit to add real-time chat functi
   <img src="./screenshots/showcase-mobile.png" alt="Mobile Showcase">
 </p>
 
+## AI Coding Skills
+
+This repo includes [agent skills](./skills/) for AI coding assistants like Claude Code, Cursor, and Copilot. They provide SDK-specific guidance for initialization, authentication, messaging, real-time events, groups, and error handling. Copy the `skills/` folder into your project to use them in your own app.
+
 ## Prerequisites
 
 - Flutter >= 3.10.5
@@ -36,7 +40,7 @@ dependencies:
   cometchat_sdk:
     hosted:
       url: https://dart.cloudsmith.io/cometchat/cometchat/
-    version: 5.0.0-beta.1
+    version: 5.0.0-beta.2
 ```
 
 Then run:

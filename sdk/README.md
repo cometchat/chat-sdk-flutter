@@ -18,7 +18,7 @@ dependencies:
   cometchat_sdk:
     hosted:
       url: https://dart.cloudsmith.io/cometchat/cometchat/
-    version: 5.0.0-beta.1
+    version: 5.0.0-beta.2
 ```
 
 Then run:

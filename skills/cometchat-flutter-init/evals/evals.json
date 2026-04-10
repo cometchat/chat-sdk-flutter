@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a Flutter chat app and just added cometchat_sdk v5 to my pubspec.yaml. Can you set up the initialization in my main.dart? My app ID is abc123def and I'm on the US region.",
+      "expected_output": "Should pass appId to CometChat.init() (NOT to AppSettingsBuilder), use Completer pattern, call init in main() before runApp(), include WidgetsFlutterBinding.ensureInitialized(), set region as lowercase 'us', handle onError properly, and check getLoggedInUser() before login. AppSettingsBuilder should only have region, subscriptionType, and optionally autoEstablishSocketConnection.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I keep getting ERR_NOT_INITIALIZED when I try to send messages with CometChat in my Flutter app. I'm calling CometChat.init() in my HomeScreen widget's build method. What's wrong?",
+      "expected_output": "Should identify that init() in build() is the problem (re-inits on every rebuild), recommend moving to main() or initState(), explain the Completer pattern for proper async handling, and note that all SDK calls must be gated behind init onSuccess completion.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "My Flutter app works fine on first launch but on second launch getLoggedInUser returns a user even though I didn't call login. I'm calling CometChat.login() right after init() succeeds every time. Is this expected?",
+      "expected_output": "Should explain that the SDK restores sessions automatically during init(), that getLoggedInUser() should be checked after init before calling login(), and that calling login() when a session already exists is unnecessary. Should show the correct pattern: init → getLoggedInUser → login only if null.",
+      "files": []
+    }
+  ]
+}

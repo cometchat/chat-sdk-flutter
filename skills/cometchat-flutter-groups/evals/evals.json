@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-groups",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to create a private group in my Flutter app using CometChat SDK v5, add 3 specific users to it as members, and then display the group chat. How do I do this?",
+      "expected_output": "Should use createGroupWithMembers (not create then add separately), CometChatGroupType.private, GroupMember with CometChatMemberScope, handle failedMembers in onSuccess. Should mention GUID restrictions (alphanumeric, underscore, hyphen only).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm the owner of a CometChat group in my Flutter app and I want to leave it. But when I call leaveGroup I get an error. What's wrong?",
+      "expected_output": "Should identify that the owner cannot leave without transferring ownership first. Must show transferGroupOwnership() before leaveGroup(). Should explain the owner → transfer → leave flow.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What's the difference between kicking and banning a user from a CometChat group? I need to implement both in my Flutter admin panel.",
+      "expected_output": "Should clearly explain: kicked users CAN rejoin, banned users CANNOT rejoin until unbanned. Should show kickGroupMember, banGroupMember, and unbanGroupMember with correct named parameters (guid:, uid:). Should mention only admin/moderator can perform these actions.",
+      "files": []
+    }
+  ]
+}

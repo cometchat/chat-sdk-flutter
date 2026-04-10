@@ -1,3 +1,22 @@
+## 5.0.0-beta.2
+
+**New**
+- Added device and routing metadata (`deviceId`, `sender`, `receiver`, `receiverType`) to socket events, enabling accurate message routing and preventing duplicate event handling.
+- Introduced a native Dart stream for typing indicators via `RealtimeRepository.typingStream`, improving performance and reliability. The `onTypingIndicator()` method now returns `Stream<TypingIndicator>`.
+- Expanded the `ReactionData` model to include additional metadata (`id`, `messageId`, `uid`) for more complete reaction tracking.
+- Standardized `ReactionActionEvent` action constants to align with the Android SDK (`message_reaction_added`, `message_reaction_removed`).
+- Updated message event processing to use a DTO-to-mapper pipeline, ensuring consistent parsing with API responses.
+- Added a platform-compatible isolate abstraction (`runInIsolate()`), improving support for web environments.
+- Improved action message text formatting to ensure consistency across platforms (e.g., "Message Edited").
+
+**Enhancements**
+- Simplified package configuration by removing platform-specific plugin settings (Android/iOS) from `pubspec.yaml`.
+
+**Fixes**
+- Resolved an issue where `deviceId` was not parsed in most socket events, which prevented proper echo filtering for typing indicators, receipts, presence, and reactions.
+- Fixed an issue where users could see their own typing indicators in group chats.
+- Corrected `rawData` handling in `MessageMapper` to store the complete JSON payload instead of only the action string.
+
 ## 5.0.0-beta1
 
 **New**

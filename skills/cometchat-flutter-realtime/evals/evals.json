@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-realtime",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I set up CometChat in my Flutter app and added a UserListener to show online/offline status for contacts. But onUserOnline and onUserOffline never fire — no errors, just silence. What am I missing?",
+      "expected_output": "Should identify that subscriptionType was not set during init (the silent failure). Must explain that without subscriptionType in AppSettingsBuilder, presence events are silently disabled. Should show the fix: set CometChatSubscriptionType.allUsers (or .roles/.friends) during init.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I want to add a 'User is typing...' indicator to my Flutter chat screen using CometChat SDK v5. How do I send and receive typing events?",
+      "expected_output": "Should show CometChat.startTyping(receiverUid:, receiverType:) and CometChat.endTyping(), receiving via MessageListener.onTypingStarted/onTypingEnded with TypingIndicator object. Should mention debouncing startTyping on text input and calling endTyping on send.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "How do I implement read receipts in my CometChat Flutter chat app? I want to show blue ticks when the other person has read my messages.",
+      "expected_output": "Should show CometChat.markAsRead(message) called when chat opens and on new real-time messages, receiving via MessageListener.onMessagesRead with MessageReceipt object containing readAt timestamp. Should mention markAsDelivered for delivery receipts and the group-specific onMessagesReadByAll/onMessagesDeliveredToAll.",
+      "files": []
+    }
+  ]
+}

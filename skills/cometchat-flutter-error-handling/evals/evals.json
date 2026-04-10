@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-error-handling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My CometChat Flutter app shows raw error codes like ERR_NOT_INITIALIZED and ERROR_USER_NOT_LOGGED_IN to users. How do I map these to user-friendly messages?",
+      "expected_output": "Should provide a mapping function from CometChat error codes to user-friendly strings. Should use CometChatException.code for the switch. Should cover the main error codes (init, auth, validation). Should NOT show raw codes to users.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "CometChat.init() keeps failing in my Flutter app because of network issues. How do I add retry logic that doesn't hammer the server?",
+      "expected_output": "Should implement exponential backoff retry. Should only retry network/transient errors (ERR_INITIALIZATION_FAILED), not config errors (ERR_INVALID_APP_ID). Should have a max attempts limit. Should use CometChatException to check the error code before retrying.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I'm getting ERROR_REQUEST_IN_PROGRESS when I call fetchNext() on my MessagesRequest in CometChat Flutter. What does this mean and how do I fix it?",
+      "expected_output": "Should explain that this error means a previous fetch is still running on the same MessagesRequest object. Should NOT suggest retrying immediately. Should suggest waiting for the previous request to complete, or using a flag to prevent concurrent calls. Should mention this is a concurrency guard, not a bug.",
+      "files": []
+    }
+  ]
+}

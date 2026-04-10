@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-messaging",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to build a basic chat screen in my Flutter app using CometChat SDK v5. Users should be able to send text messages and see incoming messages in real-time. Show me how to set up the send and receive flow for a one-on-one conversation.",
+      "expected_output": "Should show TextMessage creation with correct constructor params (text, receiverUid, receiverType, type), CometChat.sendMessage(), MessageListener with addMessageListener in initState and removeMessageListener in dispose, unique listener ID, and onTextMessageReceived callback. Should use CometChatConversationType and CometChatMessageType constants.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I want to load the message history when a user opens a chat conversation in my Flutter app. I need to show the last 30 messages and support loading more when they scroll up. How do I implement pagination with CometChat SDK v5?",
+      "expected_output": "Should use MessagesRequestBuilder with uid/guid and limit, call fetchPrevious() for history, explain calling fetchPrevious() repeatedly on the same object for pagination. Should handle BaseMessage subtypes with is operator. Should NOT use fetchNext without a cursor.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "My Flutter chat app has a bug where messages keep appearing even after the user navigates away from the chat screen. Also sometimes messages show up on the wrong screen. What's going wrong?",
+      "expected_output": "Should identify two issues: 1) listener not removed in dispose() causing leak, 2) duplicate listener IDs causing wrong screen to receive events. Should show the correct pattern: addMessageListener in initState with unique ID, removeMessageListener in dispose. Should explain that same listener ID replaces the previous listener.",
+      "files": []
+    }
+  ]
+}

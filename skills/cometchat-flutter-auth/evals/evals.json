@@ -1,0 +1,23 @@
+{
+  "skill_name": "cometchat-flutter-auth",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have CometChat SDK v5 initialized in my Flutter app. Now I need to add login functionality. My backend gives me an auth token when users sign in. How do I connect them to CometChat?",
+      "expected_output": "Should use loginWithAuthToken (not login with auth key), check getLoggedInUser() first to avoid redundant login, use Completer pattern for clean async, handle onError properly. Should NOT use auth key in production code.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My Flutter chat app needs a logout button. When users tap it, I want to disconnect them from CometChat and go back to the login screen. What's the right way to do this?",
+      "expected_output": "Should call CometChat.logout() with proper onSuccess/onError callbacks, navigate to login screen only after onSuccess fires, mention that logout automatically cancels stream subscriptions and notifies LoginListeners. Should NOT just navigate away without calling logout.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Users of my Flutter app complain that when they close and reopen the app, they have to log in again even though they didn't log out. How do I persist the CometChat session?",
+      "expected_output": "Should explain that CometChat SDK automatically persists and restores sessions during init(). The fix is to check getLoggedInUser() after init completes — if it returns a user, the session is already active and no login is needed. Should show the init → getLoggedInUser → conditional login pattern.",
+      "files": []
+    }
+  ]
+}
