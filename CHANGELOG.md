@@ -1,3 +1,24 @@
+## 5.0.0-beta.3
+
+**New**
+- Added modular exports (`core.dart`, `messaging.dart`, etc.) so you can import only what you need and reduce app size.
+- Introduced automatic HTTP retries with backoff for temporary failures (`408`, `429`, `5xx`), improving reliability.
+- Added feature flags in `AppSettings` to disable typing indicators, read receipts, and presence.
+- Added listener leak detection to help identify missing `removeListener()` calls.
+- Simplified `ConversationsRequestBuilder` with clearer method names and public flags for better control.
+
+**Enhancements**
+- Disabled request/response logging in release builds to improve performance.
+- Improved JSON parsing performance by offloading smaller payloads to background isolates.
+- Reduced default HTTP timeout to 15 seconds for faster failure handling.
+
+**Fixes**
+- Fixed dropped call events caused by incorrect event mapping.
+- Fixed call event parsing and routing for better consistency.
+- Resolved a compile issue in `_dispatchCallEvent`.
+- Fixed pagination on web by correctly handling `currentPage` and `totalPages`.
+- Improved WebSocket stability on web, reducing unnecessary reconnects.
+
 ## 5.0.0-beta.2
 
 **New**
