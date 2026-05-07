@@ -15,10 +15,7 @@ Add the CometChat SDK dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cometchat_sdk:
-    hosted:
-      url: https://dart.cloudsmith.io/cometchat/cometchat/
-    version: 5.0.0-beta.3
+  cometchat_sdk: ^5.0.0
 ```
 
 Then run:
