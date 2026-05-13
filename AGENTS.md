@@ -14,11 +14,11 @@ Load the relevant skill based on the task:
 - `skills/cometchat-flutter-error-handling/SKILL.md` — CometChatException, error codes, retry patterns
 - `skills/cometchat-flutter-sdk/SKILL.md` — General SDK overview and architecture
 - `skills/cometchat-flutter-core/SKILL.md` — Core SDK patterns and conventions
+- `skills/cometchat-flutter-compositions/SKILL.md` — Chaining SDK methods: registration flows, conversation patching, AI gating, bootstrap sequences
 
 ## Key Rules
 
-- SDK is hosted on Cloudsmith, not pub.dev. Always use the `hosted` URL in pubspec.yaml.
 - CometChat.init() uses callbacks (onSuccess/onError), not direct returns. Use a Completer for async/await.
 - Always call CometChat.getLoggedInUser() before login() to check for existing sessions.
 - Use auth tokens in production, not auth keys.
-- Documentation: https://www.cometchat.com/docs/sdk/flutter/5.0/overview
+- Documentation: https://www.cometchat.com/docs/sdk/flutter/overview

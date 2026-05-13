@@ -11,6 +11,8 @@ Initialization is the gateway to every CometChat operation. Every failure mode d
 
 CometChat.init() is a `Future<void>` that uses callbacks (onSuccess/onError), not a direct return value. The SDK is not ready until onSuccess fires. Use a Completer to bridge to async/await.
 
+**Architecture Note:** The SDK uses a pure native Dart implementation (no platform channels). All functionality lives in Dart code under `lib/src/`. The `CometChat.init()` call triggers `SdkInitializer.initialize()` which sets up transport, auth, repositories, and real-time stream subscriptions.
+
 **Failure modes this skill prevents:**
 1. Calling SDK methods before init() completes
 2. Building AppSettings with wrong region (must be lowercase: 'us', 'eu', 'in')
@@ -36,16 +38,25 @@ Note: The SDK handles session restoration internally during init(). If a previou
 
 appId is NOT a property of AppSettingsBuilder — it's passed directly to CometChat.init(). The builder configures region, subscription, and connection settings.
 
-```dart
-String appId = "YOUR_APP_ID";
-String region = "us"; // lowercase only: 'us', 'eu', or 'in'
+The builder supports two API styles — both are valid:
 
+```dart
+// Style A: Property assignment (cascade notation)
 AppSettings appSettings = (AppSettingsBuilder()
   ..subscriptionType = CometChatSubscriptionType.allUsers
   ..region = region
-  ..autoEstablishSocketConnection = true  // default: true
+  ..autoEstablishSocketConnection = true
+).build();
+
+// Style B: Method setters
+AppSettings appSettings = (AppSettingsBuilder()
+  ..subscribePresenceForAllUsers()
+  ..setRegion(region)
+  ..setAutoEstablishSocketConnection(true)
 ).build();
 ```
+
+Both produce identical results. Use whichever style matches your codebase conventions.
 
 Common mistakes:
 - Region must be lowercase: 'us' not 'US' — the SDK validates against ['us', 'eu', 'in'] and throws ERR_INVALID_REGION
@@ -99,6 +110,19 @@ void main() async {
 ```
 
 WidgetsFlutterBinding.ensureInitialized() is required because Flutter's platform channel must be set up before runApp(). Without it: 'ServicesBinding was accessed before the binding was initialized'.
+
+## Step 2.5: Post-Init Configuration (Often Missed)
+
+After init succeeds, configure source tracking and platform params. These are needed for analytics and platform identification but are not documented in the init flow:
+
+```dart
+// Call immediately after init() succeeds
+CometChat.setSource("your_app_name", "flutter", "dart");
+CometChat.setPlatformParams(platform: "flutter", sdkVersion: "1.0.0");
+CometChat.setDemoMetaInfo(jsonObject: {"app": "your_app_name"});
+```
+
+These are fire-and-forget calls — no callbacks needed. Skip them only if you don't need analytics tracking.
 
 ## Step 3: Check Existing Session Before Login
 
@@ -238,3 +262,4 @@ Future<void> initWithRetry(String appId, AppSettings appSettings, {int maxAttemp
 - All downstream SDK calls gated behind init completion
 - getLoggedInUser() checked after init() before attempting login()
 - subscriptionType set if you need presence events
+- If using Calls SDK: `CometChatCalls.init()` called AFTER `CometChat.init()` completes (see `cometchat-flutter-calling` skill)

@@ -1,3 +1,20 @@
+## 5.0.1
+
+**New**
+- None
+
+**Enhancements**
+- Enhanced CometChat Skills to improve support for agentic integrations and workflow interoperability.
+
+**Fixes**
+- Fixed an issue where push notification tokens were not registered correctly on iOS devices, preventing reliable notification delivery.
+
+**Deprecations**
+- None
+
+**Removals**
+- None
+
 ## 5.0.0
 
 **New**
@@ -62,7 +79,7 @@
 - Fixed an issue where users could see their own typing indicators in group chats.
 - Corrected `rawData` handling in `MessageMapper` to store the complete JSON payload instead of only the action string.
 
-## 5.0.0-beta1
+## 5.0.0-beta.1
 
 **New**
 - All platform channel method calls have been replaced with native Dart implementations, resulting in significant speed and performance improvements.

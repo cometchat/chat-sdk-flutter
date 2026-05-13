@@ -98,7 +98,9 @@ Map the user's request to the right feature skill:
 | "send messages", "chat screen", "messaging" | Messaging | `cometchat-flutter-messaging` |
 | "typing indicator", "online status", "read receipts" | Real-time | `cometchat-flutter-realtime` |
 | "group chat", "create group", "add members" | Groups | `cometchat-flutter-groups` |
+| "voice call", "video call", "calling", "WebRTC" | Calling | `cometchat-flutter-calling` |
 | "error handling", "retry", "error codes" | Errors | `cometchat-flutter-error-handling` |
+| "AI assistant", "AI bot", "smart replies" | AI Features | `cometchat-flutter-messaging` (AI message types) |
 | "add chat to my app" (general) | Full integration | Follow Steps 3-7 below |
 
 If the request maps to a specific feature, read that skill and follow it. If it's a general "add chat" request, follow the full integration flow below.
@@ -249,6 +251,8 @@ For a full working example, see the recipe files:
 | Messages on wrong screen | Duplicate listener IDs | Use unique IDs per screen instance |
 | ERR_FILTERS_MISSING | fetchNext without cursor | Use fetchPrevious for history, fetchNext needs messageId |
 | Owner can't leave group | Must transfer ownership first | Call transferGroupOwnership before leaveGroup |
+| Call fails: participants exceed limit | Group too large for call signaling | Check Dashboard plan limits, or use token-based flow (see `cometchat-flutter-calling`) |
+| MissingPluginException on call | Calls SDK used on web/desktop | Calls SDK supports Android and iOS only |
 
 ---
 

@@ -59,6 +59,17 @@ Internal SDK uses typed exceptions (AuthException, NetworkException, StateExcept
 | INVALID_APNS_DEVICE_TOKEN | Bad APNS device token | Refresh token |
 | INVALID_APNS_VOIP_TOKEN | Bad APNS VoIP token | Refresh token |
 
+### Calling Errors
+
+Calling uses two exception types: `CometChatException` (from Chat SDK signaling) and `CometChatCallsException` (from Calls SDK WebRTC session).
+
+| Error | Source | Meaning | Fix |
+|-------|--------|---------|-----|
+| Participants exceed limit | CometChatException | Group has more members than the call participant cap (default 50) | Check Dashboard plan limits. SUGGESTION: Consider gating the call button on `group.membersCount` |
+| Token generation failed | CometChatCallsException | `generateToken()` failed — invalid session ID or auth token | Ensure user is logged in, session ID is valid |
+| Session start failed | CometChatCallsException | `startSession()` failed — invalid token or network issue | Regenerate token and retry |
+| MissingPluginException | Platform error | Calls SDK used on unsupported platform | Calls SDK supports Android and iOS only (method channels). Guard with platform check |
+
 ## Error Handling Pattern
 
 ```dart
@@ -144,6 +155,17 @@ Future<T> retryWithBackoff<T>({
 | Config | ERR_INVALID_APP_ID, ERR_INVALID_REGION | No | Fix configuration |
 
 ## Anti-Patterns
+
+**Stripping CometChatException in repository/wrapper layers:**
+```dart
+// ❌ WRONG — converts typed exception to String, loses error code
+// Upstream code can no longer do retry decisions or user-friendly mapping
+catch (e) { throw e.toString(); }
+
+// ✅ CORRECT — preserve the typed exception
+on CometChatException catch (e) { rethrow; }
+catch (e) { throw CometChatException('UNKNOWN', details: e.toString()); }
+```
 
 **Empty onError — silently swallowing errors:**
 ```dart

@@ -42,6 +42,17 @@ APPID_GOES_TO_INIT
 REGION_LOWERCASE
   Region: 'us', 'eu', 'in'. Validated against exact list. Case-sensitive.
 
+ASYNC_SAFETY
+  After any await on an SDK method, verify calling context is still valid
+  before using the result. In Flutter: check `mounted` after EVERY await.
+  This is the most commonly violated rule — even experienced developers miss it.
+  Breaking this → setState on disposed widget, crash.
+
+CACHE_SDK_REFS
+  Cache SDK references (datasource, repositories) before entering async flows.
+  Do not re-lookup via InheritedWidget after await points or in dispose().
+  Breaking this → "Looking up a deactivated widget's ancestor" crash.
+
 PUSH_CLEANUP_ON_LOGOUT
   CometChatNotifications.unregisterPushToken() before CometChat.logout().
 ```
@@ -91,6 +102,34 @@ Future<User> loginWithToken(String token) {
 }
 ```
 
+### Defensive Completer: isCompleted guard and timeout
+
+Some SDK methods (notably `getLoggedInUser`) may resolve both the callback and the Future, or may not call either callback in edge cases. Use an `isCompleted` guard and a timeout for safety:
+
+```dart
+Future<User?> getLoggedInUserSafe() async {
+  try {
+    final c = Completer<User?>();
+    CometChat.getLoggedInUser(
+      onSuccess: (u) {
+        if (!c.isCompleted) c.complete(u);
+      },
+      onError: (_) {
+        if (!c.isCompleted) c.complete(null);
+      },
+    );
+    return c.future.timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => null,
+    );
+  } catch (_) {
+    return null;
+  }
+}
+```
+
+Use the `isCompleted` guard whenever a Completer might be completed more than once. Use the timeout pattern for session checks at app startup where hanging indefinitely is unacceptable.
+
 ---
 
 ## Listener Lifecycle Pattern
@@ -100,7 +139,10 @@ Every screen that receives real-time events follows this pattern:
 ```dart
 class _ChatScreenState extends State<ChatScreen> with MessageListener {
   // 1. Unique ID — prevents collisions with other screens
-  static const _listenerId = "chat_screen_${unique_suffix}";
+  //    Use a widget property to make it unique per INSTANCE, not just per screen type.
+  //    A static const works only if one instance exists at a time.
+  late final _listenerId = "chat_screen_${widget.receiverUid}";
+  // Or for guaranteed uniqueness: "chat_screen_${identityHashCode(this)}"
 
   @override
   void initState() {
@@ -124,6 +166,36 @@ class _ChatScreenState extends State<ChatScreen> with MessageListener {
 }
 ```
 
+### When you need BuildContext for listener registration
+
+If listener registration requires `context` (e.g., to access an InheritedWidget like a RepositoryProvider), `initState` won't work because `context` isn't fully available yet. Use `didChangeDependencies` with an init guard, or `addPostFrameCallback`:
+
+```dart
+// Option A: didChangeDependencies with guard
+bool _initialized = false;
+
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  if (!_initialized) {
+    _initialized = true;
+    RepositoryProvider.of(context).datasource.addGroupListener(_lid, _listener);
+    _loadData();
+  }
+}
+
+// Option B: addPostFrameCallback in initState
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    RepositoryProvider.of(context).datasource.addMessageListener(_lid, this);
+  });
+}
+```
+
+Both are valid. The key rule remains: always remove in `dispose()`.
+
 Listener types and their add/remove methods:
 
 | Listener | Add | Remove |
@@ -134,6 +206,42 @@ Listener types and their add/remove methods:
 | ConnectionListener | addConnectionListener | removeConnectionListener |
 | LoginListener | addloginListener (lowercase 'l') | removeLoginListener |
 | CallListener | addCallListener | removeCallListener |
+
+---
+
+## Async Safety Pattern
+
+SDK methods are async. Between `await` and response, the calling widget can be disposed. Always guard with `mounted` checks and cache references before async gaps.
+
+```dart
+// ✅ CORRECT — cache ref, check mounted after every await
+Future<void> _init() async {
+  final datasource = RepositoryProvider.of(context).datasource; // cache before async
+  final user = await datasource.getLoggedInUser();
+  if (!mounted) return;  // guard after await
+
+  await fetchMessages();
+  if (!mounted) return;  // guard again
+
+  datasource.addMessageListener(_id, this); // use cached ref
+}
+
+@override
+void dispose() {
+  _datasource.removeListener(_id); // use cached ref, not context lookup
+  super.dispose();
+}
+```
+
+```dart
+// ❌ WRONG — re-lookup after await, no mounted check
+Future<void> _init() async {
+  final user = await RepositoryProvider.of(context).datasource.getLoggedInUser();
+  setState(() => _user = user); // widget may be disposed — crash
+
+  // dispose uses context lookup — crashes on deactivated widget
+}
+```
 
 ---
 
@@ -191,16 +299,39 @@ void main() async {
 
 ## BaseMessage Subtype Checking
 
-`BaseMessage` has no `.text` property. Always check the concrete type:
+`BaseMessage` has no `.text` property. Always check the concrete type. Message lists from `fetchPrevious()`/`fetchNext()` contain ALL subtypes — not just chat messages:
 
 ```dart
 for (var msg in messages) {
+  // System events — not chat bubbles
+  if (msg is Action) {
+    // actionOn is BaseMessage → message-level (delete/edit) — typically skip
+    // actionOn is User/GroupMember → group-level (join/leave/kick) — show as banner
+    if (msg.actionOn is BaseMessage) continue;
+    displaySystemBanner(msg.message ?? msg.action ?? 'Action');
+    continue;
+  }
+  if (msg is Call) {
+    displayCallBanner(msg);
+    continue;
+  }
+
+  // Chat messages — render as bubbles
   if (msg is TextMessage) print(msg.text);
   else if (msg is MediaMessage) print(msg.attachment?.fileUrl);
   else if (msg is CustomMessage) print(msg.customData);
+  else if (msg is InteractiveMessage) print(msg.interactiveData);
   else print("[${msg.type} message]");
 }
 ```
+
+The full subtype hierarchy of `BaseMessage`:
+- `TextMessage` — text content (`.text`)
+- `MediaMessage` — file/image/video/audio (`.attachment`, `.caption`)
+- `CustomMessage` — app-defined payload (`.customData`, `.subType`)
+- `InteractiveMessage` — forms, cards (`.interactiveData`)
+- `Action` — system events (`.action`, `.actionOn`, `.actionBy`)
+- `Call` — call events (`.callInitiator`, `.callReceiver`, `.sessionId`)
 
 ---
 

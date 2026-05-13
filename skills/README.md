@@ -18,10 +18,11 @@ cp -r skills/ /path/to/your/project/skills/
 |-------|-------------|
 | `cometchat-flutter-init` | SDK setup, CometChat.init(), AppSettingsBuilder, ERR_NOT_INITIALIZED |
 | `cometchat-flutter-auth` | Login, logout, session management, auth tokens |
-| `cometchat-flutter-messaging` | Sending/receiving messages, MessageListener, pagination |
-| `cometchat-flutter-realtime` | Typing indicators, presence, read receipts, ConnectionListener |
+| `cometchat-flutter-messaging` | Sending/receiving messages, MessageListener, pagination, AI messages |
+| `cometchat-flutter-realtime` | Typing indicators, presence, read receipts, ConnectionListener, AIAssistantListener |
 | `cometchat-flutter-groups` | Group CRUD, member management, kick/ban, GroupListener |
 | `cometchat-flutter-error-handling` | CometChatException, error codes, retry patterns |
+| `cometchat-flutter-compositions` | Chaining SDK methods: registration flows, conversation patching, AI gating, bootstrap sequences |
 
 ## How Auto-Detection Works
 
@@ -29,7 +30,7 @@ Each skill has a `description` field in its YAML frontmatter that lists trigger 
 
 ## Compatibility
 
-- CometChat Flutter SDK v5 (5.0.0-beta.1+)
+- CometChat Flutter SDK v5 (5.0.0)
 - Flutter 3.x
 - Dart 3.x
 - Works with: Kiro, Claude Code, Cursor, Copilot, and other AI coding assistants that support the skills ecosystem

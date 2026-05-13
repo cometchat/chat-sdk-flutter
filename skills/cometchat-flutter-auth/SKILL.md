@@ -125,6 +125,28 @@ await CometChat.createUser(newUser, authKey,
 
 **Signature:** `static Future<User?> createUser(User user, String authKey, {required Function(User)? onSuccess, required Function(CometChatException)? onError})`
 
+## Registration Flow: createUser → login
+
+Registration requires chaining two SDK calls. Create the user first, then log them in:
+
+```dart
+// 1. Create user
+await CometChat.createUser(User(uid: uid, name: name), authKey,
+  onSuccess: (user) => debugPrint("Created: ${user.uid}"),
+  onError: (e) => throw e,
+);
+
+// 2. Login the newly created user
+await CometChat.login(uid, authKey,
+  onSuccess: (user) => debugPrint("Logged in: ${user.uid}"),
+  onError: (e) => throw e,
+);
+```
+
+Error handling between steps: if `createUser` succeeds but `login` fails, the user already exists in CometChat. Retry `login` — do not call `createUser` again (it will fail with user-already-exists).
+
+See `cometchat-flutter-compositions` skill for the full registration pattern with error handling.
+
 ## Logout
 
 Cancels all stream subscriptions automatically and notifies LoginListeners. Call this when your user logs out of your app. Always unregister push notification tokens before logout.

@@ -11,11 +11,12 @@ Five listener types handle all real-time events. Each follows the same lifecycle
 
 | Listener | Register | Remove | Events |
 |----------|----------|--------|--------|
-| MessageListener | addMessageListener(id, this) | removeMessageListener(id) | Messages, typing, receipts, reactions, edits, deletes |
+| MessageListener | addMessageListener(id, this) | removeMessageListener(id) | Messages, typing, receipts, reactions, edits, deletes, moderation, AI messages |
 | UserListener | addUserListener(id, this) | removeUserListener(id) | onUserOnline, onUserOffline |
 | GroupListener | addGroupListener(id, this) | removeGroupListener(id) | Member joined/left/kicked/banned/unbanned, scope changed |
 | ConnectionListener | addConnectionListener(id, this) | removeConnectionListener(id) | onConnected, onConnecting, onDisconnected, onFeatureThrottled, onConnectionError |
 | LoginListener | addloginListener(id, this) | removeLoginListener(id) | loginSuccess, loginFailure, logoutSuccess, logoutFailure |
+| AIAssistantListener | addAIAssistantListener(id, this) | removeAIAssistantListener(id) | onAIAssistantEventReceived |
 
 Note: `addloginListener` has lowercase 'l' — this is the actual SDK API.
 
@@ -102,6 +103,93 @@ void onTypingEnded(TypingIndicator typingIndicator) {
 ```
 
 The SDK also exposes `CometChat.onTypingIndicator()` which returns a `Stream<TypingIndicator>` for stream-based consumption.
+
+### Typing on a Conversation List (Multi-Conversation)
+
+The single-chat example above uses a boolean `_isTyping`. On a conversation list screen, you need to map typing events to specific conversations using a keyed map.
+
+Key: build a conversation key from `TypingIndicator` fields to match against your conversation list.
+
+```dart
+// For 1:1 chats, the key is the sender's UID.
+// For groups, the key is the receiverId (the GUID).
+String _typingKey(TypingIndicator indicator) {
+  return indicator.receiverType == 'group'
+      ? indicator.receiverId
+      : indicator.sender.uid;
+}
+```
+
+Track typing state as a map of conversation key → typer's name:
+
+```dart
+// State: conversationKey → name of user typing
+final Map<String, String> _typingMap = {};
+
+@override
+void onTypingStarted(TypingIndicator indicator) {
+  final key = _typingKey(indicator);
+  setState(() => _typingMap[key] = indicator.sender.name);
+}
+
+@override
+void onTypingEnded(TypingIndicator indicator) {
+  final key = _typingKey(indicator);
+  setState(() => _typingMap.remove(key));
+}
+```
+
+Then when rendering a conversation row, check `_typingMap` using the conversation partner's UID (for users) or GUID (for groups):
+
+```dart
+// Look up typing status for this conversation
+final entity = conversation.conversationWith;
+final String convKey;
+if (entity is User) {
+  convKey = entity.uid;
+} else if (entity is Group) {
+  convKey = entity.guid;
+}
+final typingName = _typingMap[convKey]; // null if nobody is typing
+```
+
+The SDK does not send `onTypingEnded` if the user disconnects or goes idle without explicitly stopping. Add a safety-net timer (5-8 seconds) that auto-clears stale typing entries from the map. This prevents "ghost" typing indicators if `onTypingEnded` is never received.
+
+```dart
+final Map<String, String> _typingMap = {};
+final Map<String, Timer> _typingTimers = {};
+
+@override
+void onTypingStarted(TypingIndicator indicator) {
+  final key = _typingKey(indicator);
+
+  // Cancel any existing safety-net timer for this key
+  _typingTimers[key]?.cancel();
+
+  setState(() => _typingMap[key] = indicator.sender.name);
+
+  // Safety-net: auto-clear after 6s if onTypingEnded never arrives
+  _typingTimers[key] = Timer(const Duration(seconds: 6), () {
+    if (mounted) setState(() => _typingMap.remove(key));
+    _typingTimers.remove(key);
+  });
+}
+
+@override
+void onTypingEnded(TypingIndicator indicator) {
+  final key = _typingKey(indicator);
+  _typingTimers[key]?.cancel();
+  _typingTimers.remove(key);
+  setState(() => _typingMap.remove(key));
+}
+
+// Cancel all timers in dispose:
+@override
+void dispose() {
+  for (final timer in _typingTimers.values) { timer.cancel(); }
+  super.dispose();
+}
+```
 
 ## Delivery & Read Receipts
 
@@ -191,6 +279,14 @@ String status = CometChat.getConnectionStatus();
 
 The SDK auto-reconnects on disconnect. In auto mode: connected in foreground, disconnected in background.
 
+### Web-Specific Behavior
+
+The SDK adapts WebSocket handling for web browsers:
+
+- **Lifecycle:** `AppLifecycleState.inactive` is ignored on web (tab focus changes briefly trigger it, causing false disconnects on native). Only `paused`/`detached`/`hidden` trigger background disconnect on web.
+- **Pong timeout:** 10 seconds on web (vs 3s on native). Browser timer throttling in background tabs can delay pong responses — the longer timeout prevents false reconnections.
+- **Tab resume:** When a browser tab returns to foreground, the SDK resets any queued reconnection attempts before reconnecting. This prevents a storm of simultaneous reconnect attempts from timers that were throttled while the tab was in the background.
+
 ## Anti-Patterns
 
 **No subscriptionType → no presence events:**
@@ -213,6 +309,8 @@ AppSettings appSettings = (AppSettingsBuilder()
 // Missing dispose cleanup
 ```
 
+The SDK logs a warning when any listener map exceeds 10 entries — this strongly suggests a leak from missing `removeListener()` calls in `dispose()`.
+
 **Duplicate listener IDs across screens:**
 ```dart
 // ❌ WRONG — second replaces first silently
@@ -223,12 +321,31 @@ CometChat.addMessageListener("listener", screenB);  // screenA stops receiving
 **Calling markAsRead without checking featureThrottled:**
 The SDK validates connection state internally. If featureThrottled, markAsRead throws ERROR_RECEIPTS_TEMPORARILY_BLOCKED.
 
+**Re-fetching full conversation list on every new message:**
+```dart
+// ❌ WRONG — nukes list, causes full screen rebuild on every message
+void onNewMessage() {
+  conversations = [];
+  fetchAllConversations(); // O(n) network call, UI flashes
+}
+
+// ✅ CORRECT — use getConversation() to patch single item in-place
+void onNewMessage(BaseMessage message) async {
+  final (partner, type) = extractPartner(message, loggedInUid);
+  final updated = await getConversation(partner, type);
+  conversations.removeWhere((c) => c.conversationId == updated.conversationId);
+  conversations.insert(0, updated); // move to top with updated lastMessage/unreadCount
+}
+```
+See `cometchat-flutter-compositions` skill for the full partner extraction and patching pattern.
+
 ## Checklist
 
 - subscriptionType set during init (required for presence events)
 - All listeners registered in initState, removed in dispose
 - Unique listener IDs per screen/widget instance
 - Typing indicators: startTyping on text input change, endTyping on send or pause
+- Conversation list typing: use keyed map (not boolean) to track per-conversation typing state, with safety-net timer (5-8s) to auto-clear stale entries
 - markAsRead called when chat window opens and on new real-time messages
 - ConnectionListener registered at app level to handle reconnection UI
 - onError callbacks handled (not empty) on markAsRead/markAsDelivered

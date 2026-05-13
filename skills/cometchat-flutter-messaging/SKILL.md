@@ -5,7 +5,7 @@ description: Use when sending or receiving messages with CometChat Flutter SDK v
 
 # CometChat Flutter SDK v5 Messaging
 
-Four message types: TextMessage, MediaMessage, CustomMessage, InteractiveMessage. All sent via dedicated methods on the CometChat class. Real-time receiving via MessageListener. History via MessagesRequestBuilder.
+Four message types: TextMessage, MediaMessage, CustomMessage, InteractiveMessage. Plus AI message types: AIAssistantMessage, AIToolResultMessage, AIToolArgumentMessage. All sent via dedicated methods on the CometChat class. Real-time receiving via MessageListener. History via MessagesRequestBuilder.
 
 ## Sending Messages
 
@@ -128,7 +128,7 @@ class _ChatScreenState extends State<ChatScreen> with MessageListener {
 
 Key: As a sender, you will NOT receive your own message via the listener. Multi-device users will receive their own messages on other devices.
 
-Full MessageListener callbacks: onTextMessageReceived, onMediaMessageReceived, onCustomMessageReceived, onInteractiveMessageReceived, onTypingStarted, onTypingEnded, onMessagesDelivered, onMessagesRead, onMessagesDeliveredToAll, onMessagesReadByAll, onMessageEdited, onMessageDeleted, onTransientMessageReceived, onInteractionGoalCompleted, onMessageReactionAdded, onMessageReactionRemoved, onMessageModerated.
+Full MessageListener callbacks: onTextMessageReceived, onMediaMessageReceived, onCustomMessageReceived, onInteractiveMessageReceived, onTypingStarted, onTypingEnded, onMessagesDelivered, onMessagesRead, onMessagesDeliveredToAll, onMessagesReadByAll, onMessageEdited, onMessageDeleted, onTransientMessageReceived, onInteractionGoalCompleted, onMessageReactionAdded, onMessageReactionRemoved, onMessageModerated, onAIAssistantMessageReceived, onAIToolResultReceived, onAIToolArgumentsReceived.
 
 ## Fetching Message History
 
@@ -156,6 +156,20 @@ messageRequest.fetchPrevious(
 ```
 
 Call `fetchPrevious()` repeatedly on the same object for pagination (loads progressively older messages).
+
+### Pagination Metadata
+
+`MessagesResult` includes optional page-based pagination fields alongside cursor-based pagination:
+
+```dart
+// MessagesResult fields:
+// - messages: List<BaseMessage>
+// - hasMore: bool
+// - currentPage: int?   (from API response meta.pagination.current_page)
+// - totalPages: int?    (from API response meta.pagination.total_pages)
+```
+
+The SDK automatically extracts `currentPage` and `totalPages` from the API response's `meta.pagination` object (matching Android SDK behavior). These are used internally by `MessagesRequest` to determine when pagination is exhausted (`currentPage == totalPages`). For most consumer use cases, just call `fetchPrevious()`/`fetchNext()` repeatedly — the SDK handles pagination state internally.
 
 ### Load missed messages (newer messages since last seen)
 
@@ -191,6 +205,56 @@ fetchNext requires at least one cursor: messageId, timestamp, or updatedAfter. W
 | unread | bool | Only unread messages |
 | withTags | bool | Include tag info |
 | tags | List<String> | Filter by tags |
+
+## Handling Action Messages in Message Lists
+
+`fetchPrevious()`/`fetchNext()` return ALL message categories, including `Action` messages (category: `action`). These represent system events — member joined, member kicked, message deleted, message edited, scope changed, etc.
+
+### Distinguishing Action types
+
+The `Action` class has an `actionOn` field that tells you what the action targets:
+
+- `actionOn is BaseMessage` → message-level action (delete or edit). The original message in your list already reflects the state via `deletedAt`/`editedAt`, so the Action is redundant for display.
+- `actionOn is User` or `actionOn is GroupMember` → group-level action (member joined/left/kicked/banned, scope changed). These are typically rendered as system banners.
+
+```dart
+for (var msg in messages) {
+  if (msg is Action) {
+    // Message-level actions (delete/edit) — skip, the bubble handles it
+    if (msg.actionOn is BaseMessage) continue;
+
+    // Group-level actions — render as system banner
+    displaySystemBanner(msg.message ?? msg.action ?? 'Action');
+    continue;
+  }
+
+  // Regular messages — render as bubbles
+  if (msg is TextMessage) { ... }
+  else if (msg is MediaMessage) { ... }
+}
+```
+
+### Why skip message-level Action messages?
+
+When a message is deleted, two things happen:
+1. The original message's `deletedAt` is set — the bubble shows "This message was deleted"
+2. An `Action` message is added to history — showing a redundant "message deleted" banner
+
+Displaying both creates duplicate UI for the same event. The bubble's deleted state is the canonical display.
+
+### Alternative: filter at the request level
+
+Use the `categories` filter on `MessagesRequestBuilder` to exclude action messages entirely:
+
+```dart
+MessagesRequest request = (MessagesRequestBuilder()
+  ..uid = "cometchat-uid-1"
+  ..limit = 30
+  ..categories = [CometChatMessageCategory.message]  // excludes action, call
+).build();
+```
+
+This is simpler but also hides group-level actions (member joined/left). Use it only if you don't need system banners at all.
 
 ## Edit & Delete Messages
 
@@ -268,6 +332,7 @@ req.fetchNext(...);  // No messageId, timestamp, or updatedAfter set
 - MessageListener registered in initState, removed in dispose
 - Unique listener IDs per screen/widget
 - BaseMessage subtypes checked with `is` operator when processing message lists
+- Action messages filtered: `actionOn is BaseMessage` skipped (bubble handles deleted/edited state), group-level actions rendered as banners
 - fetchPrevious for history, fetchNext for missed messages (with cursor)
 - onError callbacks handle and surface errors
 - Media messages use correct CometChatMessageType (.image, .video, .audio, .file)
