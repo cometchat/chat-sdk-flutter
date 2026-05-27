@@ -1,3 +1,28 @@
+## 5.0.2
+
+**New**
+- Added Notification Feed support with new data models including `NotificationFeedItem`, `NotificationCategory`, and `PushNotification`.
+- Added `FeedReadState` enum with values `read`, `unread`, and `all` for filtering notification feed items by read status.
+- Added `FeedEngagementType` enum with values `viewed`, `clicked`, and `interacted` for reporting user engagement on feed items.
+- Added `NotificationFeedRequestBuilder` for fetching paginated notification feed items with filters for read state, category, channel ID, tags, and date range.
+- Added `NotificationCategoriesRequestBuilder` for fetching paginated notification categories.
+- Added `markFeedItemAsDelivered()` and `markFeedItemsAsDelivered()` methods to mark notification feed items as delivered.
+- Added `markFeedItemAsRead()` method to mark a notification feed item as read.
+- Added `markAllFeedItemsAsRead()` method to mark all notification feed items as read in a single call.
+- Added `reportFeedEngagement()` method to report user engagement (viewed, clicked, interacted) on a feed item.
+- Added `getNotificationFeedUnreadCount()` method to retrieve the unread count for notification feed items.
+- Added `getNotificationFeedItem()` method to fetch a single notification feed item by ID for deep linking.
+- Added `markPushNotificationDelivered()` method to mark a push notification as delivered.
+- Added `markPushNotificationClicked()` method to mark a push notification as clicked.
+- Added `NotificationFeedListener` for receiving real-time notification feed items via WebSocket with `onFeedItemReceived()` callback.
+- Added `addNotificationFeedListener()` and `removeNotificationFeedListener()` methods for managing real-time notification feed listeners.
+
+**Enhancements**
+- None
+
+**Fixes**
+- None
+
 ## 5.0.1
 
 **New**
