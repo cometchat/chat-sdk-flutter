@@ -1,3 +1,15 @@
+## 5.0.3
+
+**New**
+- None
+
+**Enhancements**
+- Improved device recognition consistency across app launches for a more reliable experience.
+- Improved the SDK reconnect behavior by stopping further reconnection attempts after a connection-not-allowed error is received from the WebSocket connection.
+
+**Fixes**
+- Fixed an issue on web that could prevent some applications from connecting successfully in browser environments.
+
 ## 5.0.2
 
 **New**
