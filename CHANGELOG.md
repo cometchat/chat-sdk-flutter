@@ -1,3 +1,14 @@
+## 5.0.4
+
+**New**
+- None
+
+**Enhancements**
+- None
+
+**Fixes**
+- Fixed an issue where custom server configurations could fail when endpoint URLs were provided without `https://`.
+
 ## 5.0.3
 
 **New**
