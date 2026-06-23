@@ -1,3 +1,18 @@
+## 5.0.5
+
+**New**
+- Added a `CardMessage` class for receiving developer card messages, with accessors for the card payload, fallback text, and `data.text`.
+- Added an `onCardMessageReceived` callback to `MessageListener` for real-time card message delivery.
+- Added `AIAssistantCardStartedEvent`, `AIAssistantCardReceivedEvent`, and `AIAssistantCardEndedEvent` for AI assistant card streaming through `onAIAssistantEventReceived`.
+- Added an `AIAssistantElement` model with `getType()` and `getData()` to represent ordered content blocks in AI assistant messages.
+- Added `getElements()` and `setElements()` to `AIAssistantMessage` for working with ordered `AIAssistantElement` blocks from `data.elements`.
+
+**Enhancements**
+- None
+
+**Fixes**
+- None
+
 ## 5.0.4
 
 **New**
