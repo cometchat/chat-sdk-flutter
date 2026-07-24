@@ -1,3 +1,16 @@
+## 4.1.3
+
+**New**
+- Added Swift Package Manager support to the iOS plugin. Opt in with `flutter config --enable-swift-package-manager` (requires Flutter 3.44 or later). CocoaPods remains the default and works unchanged.
+
+**Enhancements**
+- Relicensed the package under the MIT License.
+- Improved pub.dev package health, with no changes to the public API, dependencies, or minimum Dart and Flutter versions.
+- Migrated the iOS plugin to Swift-only. Standard integrations require no action; apps that register plugins manually should replace `#import <cometchat_sdk/CometchatPlugin.h>` with `@import cometchat_sdk;`.
+
+**Fixes**
+- None
+
 ## 4.1.2
 
 **Enhancements**
