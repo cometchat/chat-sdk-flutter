@@ -1,3 +1,17 @@
+## 5.0.6
+
+**New**
+- Added a multi-file upload API for sending several attachments in one message. `CometChat.createUploadFileRequest()` returns an `UploadFileRequest` you upload through and manage per file — `uploadAttachment` / `uploadAttachments`, `retryAttachment`, `removeAttachment`, `clearAll` — and inspect with `getStatus()`, `getAttachments()`, and `getAttachmentCount()`.
+- Added `UploadFileListener` for per-file progress, success, rejection, and failure updates, with rejection (`onFileError`) and retryable failure (`onFileFailure`) as distinct callbacks.
+
+**Enhancements**
+- Improved Web and WebAssembly (`dart2wasm`) support.
+- Added caption editing for `image`, `video`, `audio`, and `file` messages via `editMessage()`, which now returns `Future<BaseMessage?>` (resolving to `null` on failure).
+- Relicensed the package under the MIT License.
+
+**Fixes**
+- None
+
 ## 5.0.5
 
 **New**
