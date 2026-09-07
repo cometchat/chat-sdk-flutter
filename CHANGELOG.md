@@ -1,3 +1,21 @@
+## 5.0.7
+
+**New**
+- Added thread subscriptions, allowing users to manage notifications for replies in specific threads.
+- Added support for viewing and managing threads, including filtering by user or group.
+- Added message pinning and saving, making it easier to highlight important messages and bookmark messages for later.
+- Added conversation pinning to help users keep important conversations easily accessible.
+- Added notification preferences for quoted replies and thread activity.
+- Added support for registering web push notifications.
+
+**Enhancements**
+- None
+
+**Fixes**
+- Fixed an issue where ending a call did not notify the other participant, causing their call screen to remain open.
+- Fixed an issue where transient messages were reported as sent but were not delivered to recipients.
+- Fixed crashes that could occur when notification preferences contained missing or unsupported values.
+
 ## 5.0.6
 
 **New**
