@@ -1,3 +1,14 @@
+## 5.0.8
+
+**New**
+- None
+
+**Enhancements**
+- None
+
+**Fixes**
+- Fixed read and delivery receipts being silently lost after an app relaunch that restored a saved session instead of calling `login()` again. `markAsRead` and `markAsDelivered` reported success, but the receipt was never delivered to the other participant; receipts now work on restored sessions.
+
 ## 5.0.7
 
 **New**
