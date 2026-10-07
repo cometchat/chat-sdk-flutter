@@ -1,3 +1,14 @@
+## 4.1.4
+
+**New**
+- None
+
+**Enhancements**
+- Updated the CometChat Android SDK dependency to 5.0.7.
+
+**Fixes**
+- None
+
 ## 4.1.3
 
 **New**
