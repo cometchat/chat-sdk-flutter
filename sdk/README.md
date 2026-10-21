@@ -15,7 +15,7 @@ Add the CometChat SDK dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cometchat_sdk: ^5.0.8
+  cometchat_sdk: ^5.0.9
 ```
 
 Then run:

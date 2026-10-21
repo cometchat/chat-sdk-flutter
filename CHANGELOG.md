@@ -1,3 +1,18 @@
+## 5.0.9
+
+**New**
+- None
+
+**Enhancements**
+- Improved WebSocket reconnection with progressive delays and automatic credential refresh.
+- Improved manual connection handling, logout, and disconnect to prevent unwanted connections and preserve registered listeners.
+- Updated `ping()` and connection error handling for clearer failure reporting.
+
+**Fixes**
+- Fixed reconnection failures, stuck connection attempts, duplicate WebSockets, and hanging `connect()` or `disconnect()` calls.
+- Fixed login, session, and initialization issues affecting listeners and connection state.
+- Fixed brief app interruptions being incorrectly treated as backgrounding.
+
 ## 5.0.8
 
 **New**
