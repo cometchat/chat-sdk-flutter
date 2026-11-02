@@ -1,3 +1,41 @@
+## 5.1.0
+
+**New**
+- Added offline messaging, an opt-in mode that keeps chats usable without a connection. Enable it with `OfflineConfig(enabled: true, …)` in `AppSettings`, through `init` or `initFromSettings` (which reads `chatSDK.offline`). Offline stays off unless you enable it; apart from the changes under **Breaking Changes**, an app that does not enable it behaves as on 5.0.9. On web, run `dart run cometchat_sdk:setup_web` once from your app's root; the README has the steps.
+- Added cache-first reads for messages, conversations, threads, users, groups, group members, reactions and the notification feed. Each fetch returns cached data first, then the server's, through new fetch listeners such as `MessageFetchListener` and `ConversationFetchListener`.
+- Added queued sending while offline: messages sent without a connection are stored and sent automatically on reconnect. Manage the queue with `getPendingMessages()`, `retryMessage()`, `retryAllFailedMessages()`, `discardLocalMessage()` and `addOfflineMessageListener()`, read why a send failed from `BaseMessage.failureReason`, and size the queue with the `OfflineConfig` limits and overflow policy.
+- Added reconnect sync, which catches up on missed messages, edits, deletes and conversation changes after a reconnect. Observe or drive it with `addSyncListener()`, `forceSyncNow()`, `getSyncState()` and `getLastSyncTimestamp()`.
+- Added media caching, controlled by `MediaCachingMode`, with `downloadMedia()`, `getCachedMediaPath()`, `addMediaDownloadListener()` and `getCacheSize()`.
+- Added encryption of the offline cache at rest through `OfflineConfig.encryption`, with `getOfflineEncryptionStatus()` to inspect it and `EncryptionFailureBehavior` to choose what happens when encryption is unavailable. Encryption also needs the `sqlite3mc` build-hook stanza in your app's own `pubspec.yaml`, and on web a copy of `sqlite3mc.wasm`; the README shows both.
+- Added `clearOfflineCache()` to remove cached data, and `addOfflineCacheResetListener()` to learn when the SDK resets the cache.
+- Added `message.status`, a `CometChatMessageStatus`, to read a message's delivery state.
+- Added two-phase listeners for single lookups: `ConversationDetailsListener` for `getConversation` and `MessageDetailsListener` for `CometChatHelper.getMessageDetails` deliver the cached result first, then the server's.
+
+**Enhancements**
+- Improved cross-device sync: a conversation pinned or unpinned on another device now triggers `onConversationPinned` or `onConversationUnpinned`.
+- Improved `MessageThread.subscribed`, which is now reliable on the default "my threads" list. On a `participatedByMe(false)` list it reads `false` unless the server provides the flag, and thread lists now send their page size as `per_page`.
+- Raised the `ReactionsRequest` limit from 20 to a maximum of 1000.
+- Changed `getMediaCachingMode()` to return `OFF` while offline mode is not active.
+- Changed `isOfflineEnabled()` to report whether offline mode is running, not only whether it is configured.
+
+**Fixes**
+- Fixed paging on thread, pinned and saved message lists, which now return the next page; earlier versions sent a stale cursor from page 2 onward.
+- Fixed message edits failing when the message metadata was an empty list.
+- Fixed user and group timestamps that arrived in milliseconds being misread; they are now read as seconds.
+- Fixed `lastReadMessageId` and `latestMessageId` being misread when the server sent them as strings.
+- Fixed `toJson` throwing for a message with no receiver.
+- Fixed a login that a newer `login` call had replaced still completing its session setup in the background.
+- Fixed `markMessageAsUnread` on a received one-to-one message marking the logged-in user's own conversation instead of that chat.
+
+**Breaking Changes**
+- Raised the minimum requirements to Dart 3.10, Flutter 3.38 and iOS 13 (the Android minimum stays at API 21), and the minimum `flutter_secure_storage` to 10.1.0, along with newer `drift` and `sqlite3` minimums. **Update your toolchain and dependency constraints before upgrading.**
+- Changed the package to a Flutter plugin that downloads a prebuilt SQLite binary from GitHub at build time, through the `sqlite3` package's native build hook. **Build machines must be able to reach GitHub**; air-gapped or locked-down CI needs an allowance. The package is also about 0.8 MB larger (`sqlite3mc.wasm`).
+- Changed logging in as a different user to end the previous session first: `logoutSuccess` fires, and the connection drops and reconnects under the new user. A failed re-login that ends the session fires `logoutSuccess`, then `loginFailure`.
+- Changed `setAttachment` to append to a message's attachments instead of replacing them. Use `setAttachments(list)` to replace them.
+- Changed `BlockedUsersRequest` with no direction set to request `blockedByMe` instead of `both`. Set the direction to `BlockedUsersRequest.directionBoth` to keep the old behaviour.
+- Added members to public types such as `MessagesRequest` and `MessageListener`. A class that `implements` one of them must add the new members.
+- Added new top-level exports such as `OfflineConfig`, `CometChatMessageStatus`, `SyncState` and `MessageSource`. If one clashes with a name in your app, import the SDK with `hide` or a prefix.
+
 ## 5.0.9
 
 **New**
