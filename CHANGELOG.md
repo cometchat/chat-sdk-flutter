@@ -1,3 +1,26 @@
+## 5.1.1
+
+**New**
+- None
+
+**Enhancements**
+- None
+
+**Fixes**
+- Fixed Android builds of apps using the SDK failing on Flutter 3.44 and later with unresolved reference errors, or with a JVM target mismatch (17 vs 21) on JDK 21.
+
+**Deprecations**
+- Deprecated the calling APIs in the Chat SDK, now that call ringing is handled by the Calls SDK 5.1 and the `cometchat_voip` package. The deprecated APIs continue to work unchanged in this release, and each deprecation message names its replacement.
+- Deprecated `CometChat.initiateCall()`. Use `CometChatCalls.initiateCall()` from `cometchat_calls_sdk` instead.
+- Deprecated `CometChat.acceptCall()`. Answer the call with `CometChatVoip.answer()` from `cometchat_voip`, which also marks the call as answered, then join it with `CometChatCalls.joinSession()` from `cometchat_calls_sdk`.
+- Deprecated `CometChat.rejectCall()`. Decline an incoming call with `CometChatVoip.decline()` from `cometchat_voip`, and cancel an unanswered outgoing call with `CometChatCalls.endCall()` from `cometchat_calls_sdk`.
+- Deprecated `CometChat.endCall()`. Hang up with `CallSession.leaveSession()` from `cometchat_calls_sdk` instead.
+- Deprecated `CometChat.getActiveCall()`. Use `CometChatCalls.getActiveSession()` from `cometchat_calls_sdk` instead.
+- Deprecated `CometChat.clearActiveCall()`, which is no longer needed because the Calls SDK clears its own session state when a call ends.
+- Deprecated `CometChat.joinedAtForSession()` with no replacement, since only the deprecated `endCall()` uses it.
+- Deprecated `CometChat.addCallListener()`, `CometChat.removeCallListener()` and the `CallListener` mixin. Use `CometChatCalls.addIncomingCallListener()` and `CometChatCalls.removeIncomingCallListener()` from `cometchat_calls_sdk` instead.
+- Deprecated the `CallListener2` mixin. Use `CometChatCalls.addIncomingCallListener()` from `cometchat_calls_sdk` instead.
+
 ## 5.1.0
 
 **New**
