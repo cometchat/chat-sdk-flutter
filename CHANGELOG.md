@@ -1,3 +1,17 @@
+## 4.1.5
+
+**New**
+- None
+
+**Enhancements**
+- Removed the Git LFS requirement for Swift Package Manager builds. Xcode no longer fails to resolve packages on machines without Git LFS.
+- Extended Swift Package Manager support to Flutter 3.24 and later (previously Flutter 3.41 or later).
+- Updated the CometChat iOS SDK dependency to 4.1.10.
+
+**Fixes**
+- Fixed Android build failures in apps that use Kotlin 2.4, the default from Flutter 3.47.
+- Fixed Android build failures in apps that use Android Gradle Plugin 9, the default from Flutter 3.44, by raising `compileSdk` to 34.
+
 ## 4.1.4
 
 **New**
