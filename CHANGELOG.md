@@ -1,3 +1,34 @@
+## 5.1.2
+
+**New**
+- None
+
+**Enhancements**
+- Made the package WASM-compatible on web.
+- Added an optional `ReactionFetchListener` to `ReactionsRequest.fetchPrevious()`, which delivers cached reactions first, then the server's, as `fetchNext()` does.
+- A cache written by a newer SDK version is now rebuilt instead of read, and reported to `addOfflineCacheResetListener()` with `OfflineCacheResetReason.schemaReset`. If your app switches over `OfflineCacheResetReason` without a `default` case, add this case.
+- Pinning, unpinning, saving or unsaving a message, and pinning or unpinning a conversation, no longer also fires the matching listener event on the device that made the change. The action's success callback reports it, as for other actions; other devices still receive the listener event. If you use the Flutter UI Kit 6.3.0 or earlier, upgrade it to 6.4.0 with this release.
+
+**Fixes**
+- Fixed `CometChatNotifications.muteConversations()` and `unmuteConversations()` failing with a bad request error.
+- Fixed `getConversation()` with offline enabled sometimes never calling back; it now always ends with a result or an error.
+- Fixed `fetchNext()` on `ConversationsRequest` and `BlockedUsersRequest`, called while a fetch is already running, not completing; it now completes at once with an empty list.
+- Fixed the cached conversation list repeating or skipping conversations while paging.
+- Fixed a conversation list loaded from the server showing an older last message for a conversation whose newer message is still waiting to send.
+- Fixed call messages moving their conversation up and raising its unread count based on the wrong part of the message; they now follow the call's own settings, as the server does.
+- Fixed the offline cache, when trimming to its conversation limit, removing conversations in use and keeping old ones loaded by scrolling the list.
+- Fixed a group you delete staying in the offline cache.
+- Fixed unsent messages missing from a chat reopened offline or read with filters. Every unsent message now shows in the chat's newest page, and scrolling up past them reaches older messages.
+- Fixed unsent messages carrying a receiver with only its id filled in.
+- Fixed a conversation's last message not showing that an unsent message is sending or failed, and an older message's delivery replacing a newer unsent one as the last message.
+- Fixed a queued message with several attachments not keeping a copy of every file. If a file is missing when it sends, the whole message now fails.
+- Fixed a media send failing when the media cache is full; the least recently used cached media is now removed to make room.
+- Fixed a message list started at a timestamp showing the newest cached messages instead of those from that time.
+- Fixed messages loaded by jumping to another point in a chat, including filtered and thread lists, being saved to the offline cache out of place. They are shown but not cached when they do not connect to the cached history.
+- Fixed a thread's reply count after a reconnect leaving out your own unsent replies.
+- Fixed your own sent image or file briefly loading from the network after the send completes, instead of staying on the local copy.
+- Fixed call messages read from the offline cache showing a plain "Voice call" or "Video call" label instead of the call's status.
+
 ## 5.1.1
 
 **New**
